@@ -28,7 +28,7 @@ namespace SnakeGameWPF
                 {
                     Height = 30,
                     Width = 30,
-                    Source = new BitmapImage(new Uri(@"D:\Source\Repos\dahovnikM\SnakeWPF_Ver2.0\Resources\apple.png"))
+                    Source = new BitmapImage(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\apple.png"))
                 },
                 ObjectType = GameObjectType.Fruit
             };
