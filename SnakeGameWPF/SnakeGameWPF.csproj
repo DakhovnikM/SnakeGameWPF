@@ -6,4 +6,11 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="GameObjects\" />
+    <Folder Include="GameObjectsFactories\" />
+    <Folder Include="Views\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
 </Project>
