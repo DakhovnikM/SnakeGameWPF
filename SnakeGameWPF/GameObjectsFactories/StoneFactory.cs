@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace SnakeGameWPf
+namespace SnakeGameWPF
 {
     class StoneFactory : GameObjectFactory
     {

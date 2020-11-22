@@ -1,4 +1,4 @@
-﻿namespace SnakeGameWPf
+﻿namespace SnakeGameWPF
 {
     class Stone : GameObject
     {

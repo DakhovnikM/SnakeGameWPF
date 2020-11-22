@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace SnakeGameWPf
+namespace SnakeGameWPF
 {
     class GameSettings : INotifyPropertyChanged
     {
