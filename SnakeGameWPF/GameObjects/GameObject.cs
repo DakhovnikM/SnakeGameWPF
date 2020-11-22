@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace SnakeWPF_Ver2
+namespace SnakeGameWPf
 {
     abstract class GameObject
     {

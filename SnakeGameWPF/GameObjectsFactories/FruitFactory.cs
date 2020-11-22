@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace SnakeWPF_Ver2
+namespace SnakeGameWPf
 {
     class FruitFactory : GameObjectFactory
     {

@@ -1,4 +1,4 @@
-﻿namespace SnakeWPF_Ver2
+﻿namespace SnakeGameWPf
 {
     enum Direction
     {
