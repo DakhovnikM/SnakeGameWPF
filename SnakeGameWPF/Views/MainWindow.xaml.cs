@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SnakeGameWPF.ViewModels;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +21,7 @@ namespace SnakeGameWPF.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new GameEngine(this);
+            DataContext = new MainWindowViewModel(this);
             dialogWindow = new DialogWindow(this);
 
             this.Loaded += Window_Loaded;

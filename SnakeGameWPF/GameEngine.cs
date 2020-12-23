@@ -17,18 +17,15 @@ namespace SnakeGameWPF
         public GameSettings gameSettings;
 
         private readonly DispatcherTimer timer;
+        public int Score { get; set; } = 7;
 
         public ObservableCollection<GameObject> GameCoolection { get; set; }
 
         Direction direction;
 
         #region CTOR
-        public GameEngine()
-        {
-
-        }
-
-        public GameEngine(MainWindow mainWindow) : this()
+        
+        public GameEngine(MainWindow mainWindow)
         {
             gameSettings = new GameSettings();
             scene = Scene.GetScene(gameSettings);
@@ -40,6 +37,7 @@ namespace SnakeGameWPF
             mainWindow.KeyDown += MainWindow_KeyDown; ;
 
             GameCoolection = new ObservableCollection<GameObject>();
+            //Score = gameSettings.Score;
             GetGameColection();
         }
         #endregion
@@ -90,7 +88,7 @@ namespace SnakeGameWPF
                 scene.AddNewFruitToFruits();
                 scene.AddNewSnakeBodyEllement();
 
-                gameSettings.Score++;
+                Score++;
                 canAddStone = true;
 
                 IncreaseSpeed();
@@ -176,6 +174,7 @@ namespace SnakeGameWPF
 
             foreach (var snake in scene.Snake) GameCoolection.Add(snake);
         }
+
         /// <summary>
         /// Проверяет на совпадение координаты змеи и всех обьектов.
         /// </summary>
