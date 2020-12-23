@@ -25,7 +25,7 @@ namespace SnakeGameWPF
             return fruit;
         }
 
-        public List<GameObject> GetFruites()
+        public IList<GameObject> GetFruites()
         {
             var fruites = new List<GameObject>();
 

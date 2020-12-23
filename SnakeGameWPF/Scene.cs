@@ -7,11 +7,11 @@ namespace SnakeGameWPF
 {
     class Scene
     {
-        public List<GameObject> Fruits { get; private set; }
+        public IList<GameObject> Fruits { get; private set; }
 
-        public List<GameObject> Stones { get; private set; }
+        public IList<GameObject> Stones { get; private set; }
 
-        public List<GameObject> Snake { get; private set; }
+        public IList<GameObject> Snake { get; private set; }
 
         readonly GameSettings _gameSettings;
 

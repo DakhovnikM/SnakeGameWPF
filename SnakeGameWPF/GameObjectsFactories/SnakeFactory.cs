@@ -25,7 +25,7 @@ namespace SnakeGameWPF
             return snakeEllement;
         }
 
-        public List<GameObject> GetSnake()
+        public IList<GameObject> GetSnake()
         {
             var snake = new List<GameObject>();
 

@@ -14,7 +14,7 @@ namespace SnakeGameWPF.ViewModels
     {
         Direction direction;
         private readonly Scene _scene;
-        private GameSettings _gameSettings;
+        private readonly GameSettings _gameSettings;
         private readonly DispatcherTimer _timer;
 
         #region Свойства
@@ -51,7 +51,7 @@ namespace SnakeGameWPF.ViewModels
             }
         }
 
-        public ObservableCollection<GameObject> GameCoolection { get; set; }
+        public ObservableCollection<GameObject> GameCoolection { get; private set; }
         #endregion
 
         #region CTOR
@@ -65,15 +65,16 @@ namespace SnakeGameWPF.ViewModels
             _scene = Scene.GetScene(_gameSettings);
 
             _timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, _gameSettings.SnakeSpeed) };
-            _timer.Tick += GameCycle;
+            _timer.Tick += GameEngine;
 
             direction = Direction.Pause;
             mainWindow.KeyDown += MainWindow_KeyDown; ;
 
-            GameCoolection = new ObservableCollection<GameObject>();
             Score = _gameSettings.Score;
             Life = _gameSettings.SnakeLife;
             Level = _gameSettings.Level;
+
+            GameCoolection = new ObservableCollection<GameObject>();
             GetGameColection();
         }
         #endregion
@@ -110,7 +111,7 @@ namespace SnakeGameWPF.ViewModels
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void GameCycle(object sender, EventArgs e)
+        private void GameEngine(object sender, EventArgs e)
         {
             bool snakeBitItSelf = SnakeHeadPositionMatchBody();
             if (snakeBitItSelf) Life--;
@@ -205,9 +206,7 @@ namespace SnakeGameWPF.ViewModels
             GameCoolection.Clear();
 
             foreach (var fruit in _scene.Fruits) GameCoolection.Add(fruit);
-
             foreach (var stone in _scene.Stones) GameCoolection.Add(stone);
-
             foreach (var snake in _scene.Snake) GameCoolection.Add(snake);
         }
 
@@ -217,7 +216,7 @@ namespace SnakeGameWPF.ViewModels
         /// <param name="gameObject"></param>
         /// <param name="gameObjects"></param>
         /// <returns></returns>
-        private GameObject GetObjectToRemove(List<GameObject> gameObjects)
+        private GameObject GetObjectToRemove(IList<GameObject> gameObjects)
         {
             foreach (var item in gameObjects)
                 if (Math.Abs(_scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep * 4)

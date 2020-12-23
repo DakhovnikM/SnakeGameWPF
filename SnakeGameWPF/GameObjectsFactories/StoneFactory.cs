@@ -25,7 +25,7 @@ namespace SnakeGameWPF
             return stone;
         }
 
-        public List<GameObject> GetStones()
+        public IList<GameObject> GetStones()
         {
             var stones = new List<GameObject>();
 
@@ -34,7 +34,7 @@ namespace SnakeGameWPF
                 GameObject stone = GetObject();
                 stones.Add(stone);
             }
-            return stones;
+           return stones;
         }
     }
 }
