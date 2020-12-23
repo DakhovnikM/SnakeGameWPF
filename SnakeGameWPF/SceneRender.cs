@@ -54,9 +54,9 @@ namespace SnakeGameWPF
         /// <param name="gameObject"></param>
         private void RenderingObject(GameObject gameObject, MainWindow mainWindow)
         {
-            Canvas.SetLeft(gameObject.ObjectImage, gameObject.ObjectCoordinate.X);
-            Canvas.SetTop(gameObject.ObjectImage, gameObject.ObjectCoordinate.Y);
-            mainWindow.canvas.Children.Add(gameObject.ObjectImage);
+            //Canvas.SetLeft(gameObject.ObjectImage, gameObject.ObjectCoordinateX);
+            //Canvas.SetTop(gameObject.ObjectImage, gameObject.ObjectCoordinateY);
+            //mainWindow.canvas.Children.Add(gameObject.ObjectImage);
         }
     }
 }

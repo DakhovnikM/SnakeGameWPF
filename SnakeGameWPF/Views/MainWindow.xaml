@@ -19,7 +19,7 @@
         BorderThickness="3">
 
     <Window.DataContext>
-        <dc:GameSettings/>
+        <dc:GameEngine/>
     </Window.DataContext>
 
     <Window.Resources>
@@ -56,6 +56,25 @@
                 Grid.Column="0" 
                 Background="Bisque" 
                 Height="700" Width="700"/>
+
+            <ItemsControl ItemsSource="{Binding FoolCoolection}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding ObjectCoordinateX}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding ObjectCoordinateY}"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding ObjectImage}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
             <Grid x:Name="Grid0" 
               Grid.Column="1" 

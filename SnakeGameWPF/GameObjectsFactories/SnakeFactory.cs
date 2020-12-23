@@ -15,21 +15,11 @@ namespace SnakeGameWPF
 
         public override GameObject GetObject()
         {
-            Point point = new Point()
-            {
-                X = GameSettings.SnakeStartPositionX,
-                Y = GameSettings.SnakeStartPositionY
-            };
-
             GameObject snakeEllement = new Snake()
             {
-                ObjectCoordinate = point,
-                ObjectImage = new Image()
-                {
-                    Height = 30,
-                    Width = 30,
-                    Source = new BitmapImage(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\snakeBody.png"))
-                },
+                ObjectCoordinateX = GameSettings.SnakeStartPositionX,
+                ObjectCoordinateY = GameSettings.SnakeStartPositionY,
+                ObjectImage = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\snakeBody.png")),
                 ObjectType = GameObjectType.Snake
             };
             return snakeEllement;
@@ -37,12 +27,12 @@ namespace SnakeGameWPF
 
         public List<GameObject> GetSnake()
         {
-            List<GameObject> snake = new List<GameObject>();
+            var snake = new List<GameObject>();
 
             for (int i = 0; i < GameSettings.StartNomberOfSnakeEllements; i++)
             {
                 GameObject snakeEllement = GetObject();
-                snakeEllement.ObjectCoordinate.Y += i * 5;
+                snakeEllement.ObjectCoordinateY += i * 5;
                 snake.Add(snakeEllement);
             }
             return snake;

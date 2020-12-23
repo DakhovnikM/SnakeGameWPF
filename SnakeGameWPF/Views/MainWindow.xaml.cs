@@ -14,16 +14,13 @@ namespace SnakeGameWPF.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly GameEngine gameEngine;
-
         public DialogWindow dialogWindow;
 
         public MainWindow()
         {
             InitializeComponent();
-
+            DataContext = new GameEngine(this, dialogWindow);
             dialogWindow = new DialogWindow(this);
-            gameEngine = new GameEngine(this, dialogWindow);
 
             this.Loaded += Window_Loaded;
         }

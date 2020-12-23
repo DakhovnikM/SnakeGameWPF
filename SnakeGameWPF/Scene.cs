@@ -39,7 +39,7 @@ namespace SnakeGameWPF
 
         public void AddNewSnakeBodyEllement()
         {
-            SnakeFactory snakeFactory = new SnakeFactory(_gameSettings);
+            var snakeFactory = new SnakeFactory(_gameSettings);
             var snakeEllement = snakeFactory.GetObject();
             Snake.Add(snakeEllement);
         }
@@ -48,7 +48,7 @@ namespace SnakeGameWPF
         {
             do
             {
-                FruitFactory fruitFactory = new FruitFactory(_gameSettings);
+                var fruitFactory = new FruitFactory(_gameSettings);
                 newObject = fruitFactory.GetObject();
 
             } while (ObjectsPositionsMatched(newObject, Fruits));
@@ -59,7 +59,7 @@ namespace SnakeGameWPF
         {
             do
             {
-                StoneFactory stoneFactory = new StoneFactory(_gameSettings);
+                var stoneFactory = new StoneFactory(_gameSettings);
                 newObject = stoneFactory.GetObject();
 
             } while (ObjectsPositionsMatched(newObject, Stones));
@@ -70,8 +70,8 @@ namespace SnakeGameWPF
         {
             foreach (var item in gameObjects)
             {
-                if (Math.Abs(gameObject.ObjectCoordinate.X - item.ObjectCoordinate.X) <= _gameSettings.ShiftStep)
-                    if (Math.Abs(gameObject.ObjectCoordinate.Y - item.ObjectCoordinate.Y) <= _gameSettings.ShiftStep)
+                if (Math.Abs(gameObject.ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep)
+                    if (Math.Abs(gameObject.ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep)
                         return true;
             }
             return false;

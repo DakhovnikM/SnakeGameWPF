@@ -1,14 +1,16 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 
 namespace SnakeGameWPF
 {
     abstract class GameObject
     {
-        public Point ObjectCoordinate;
+        public double ObjectCoordinateX { get; set; }
 
-        public UIElement ObjectImage { get; set; }
+        public double ObjectCoordinateY { get; set; }
+
+        public ImageSource ObjectImage { get; set; }
 
         public GameObjectType ObjectType { get; set; }
-
     }
 }

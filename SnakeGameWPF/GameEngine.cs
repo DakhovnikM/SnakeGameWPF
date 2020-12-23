@@ -1,4 +1,6 @@
-﻿using SnakeGameWPF.Views;
+﻿using SnakeGameWPF.ViewModels;
+using SnakeGameWPF.Views;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,11 +10,9 @@ using System.Windows.Threading;
 
 namespace SnakeGameWPF
 {
-    class GameEngine
+    class GameEngine : BaseViewModel
     {
         private readonly Scene scene;
-
-        private readonly SceneRender sceneRender;
 
         public GameSettings gameSettings;
 
@@ -27,22 +27,27 @@ namespace SnakeGameWPF
         Direction direction;
 
         #region CTOR
-        public GameEngine(MainWindow mainWindow, DialogWindow dialogWindow)
+        public GameEngine()
+        {
+
+        }
+
+        public GameEngine(MainWindow mainWindow, DialogWindow dialogWindow) : this()
         {
             this.mainWindow = mainWindow;
             this.dialogWindow = dialogWindow;
 
             gameSettings = new GameSettings();
             scene = Scene.GetScene(gameSettings);
-            sceneRender = SceneRender.GetScenRender(gameSettings, mainWindow);
-
-            sceneRender.Render(scene);
 
             timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, gameSettings.SnakeSpeed) };
             timer.Tick += GameCycle;
 
             direction = Direction.Pause;
             mainWindow.KeyDown += MainWindow_KeyDown; ;
+
+            FoolCoolection = new ObservableCollection<GameObject>();
+            GetFoolColection();
         }
         #endregion
 
@@ -64,15 +69,7 @@ namespace SnakeGameWPF
 
             if (e.Key == Key.Space)
             {
-                if (timer.IsEnabled)
-                {
-                    //mainWindow.dialogWindow.Visibility = Visibility.Visible;
-                    //mainWindow.dialogWindow.Owner = mainWindow;
-                    //window3.Owner = mainWindow;
-                    //mainWindow.ApplyBlur();
-                    //window3.Visibility = Visibility.Visible;
-                    timer.Stop();
-                }
+                if (timer.IsEnabled) timer.Stop();
                 else
                 {
                     timer.Start();
@@ -93,6 +90,7 @@ namespace SnakeGameWPF
 
             bool canAddStone = false;
             GameObject objToRemove = GetObjectToRemove(scene.Fruits);
+
             if (objToRemove is Fruit fruit)
             {
                 scene.Fruits.Remove(fruit);
@@ -118,7 +116,7 @@ namespace SnakeGameWPF
 
             mainWindow.canvas.Children.Clear();
             SetNewSnakePosition();
-            sceneRender.Render(scene);
+            GetFoolColection();
         }
 
         /// <summary>
@@ -127,35 +125,36 @@ namespace SnakeGameWPF
         public void SetNewSnakePosition()
         {
             var snakeEllement = scene.Snake[0];
-            Point subPosition = snakeEllement.ObjectCoordinate;
+            var subPositionX = snakeEllement.ObjectCoordinateX;
+            var subPositionY = snakeEllement.ObjectCoordinateY;
             switch (direction)
             {
                 case Direction.Up:
-                    snakeEllement.ObjectCoordinate.Y -= gameSettings.ShiftStep;
-                    snakeEllement.ObjectCoordinate.Y = snakeEllement.ObjectCoordinate.Y < 0
+                    snakeEllement.ObjectCoordinateY -= gameSettings.ShiftStep;
+                    snakeEllement.ObjectCoordinateY = snakeEllement.ObjectCoordinateY < 0
                         ? gameSettings.GameFildWidth
-                        : snakeEllement.ObjectCoordinate.Y;
+                        : snakeEllement.ObjectCoordinateY;
                     break;
 
                 case Direction.Down:
-                    snakeEllement.ObjectCoordinate.Y += gameSettings.ShiftStep;
-                    snakeEllement.ObjectCoordinate.Y = snakeEllement.ObjectCoordinate.Y > gameSettings.GameFildWidth
+                    snakeEllement.ObjectCoordinateY += gameSettings.ShiftStep;
+                    snakeEllement.ObjectCoordinateY = snakeEllement.ObjectCoordinateY > gameSettings.GameFildWidth
                         ? 0
-                        : snakeEllement.ObjectCoordinate.Y;
+                        : snakeEllement.ObjectCoordinateY;
                     break;
 
                 case Direction.Right:
-                    snakeEllement.ObjectCoordinate.X += gameSettings.ShiftStep;
-                    snakeEllement.ObjectCoordinate.X = snakeEllement.ObjectCoordinate.X > gameSettings.GameFildWidth
+                    snakeEllement.ObjectCoordinateX += gameSettings.ShiftStep;
+                    snakeEllement.ObjectCoordinateX = snakeEllement.ObjectCoordinateX > gameSettings.GameFildWidth
                         ? 0
-                        : snakeEllement.ObjectCoordinate.X;
+                        : snakeEllement.ObjectCoordinateX;
                     break;
 
                 case Direction.Left:
-                    snakeEllement.ObjectCoordinate.X -= gameSettings.ShiftStep;
-                    snakeEllement.ObjectCoordinate.X = snakeEllement.ObjectCoordinate.X < 0
+                    snakeEllement.ObjectCoordinateX -= gameSettings.ShiftStep;
+                    snakeEllement.ObjectCoordinateX = snakeEllement.ObjectCoordinateX < 0
                         ? gameSettings.GameFildWidth
-                        : snakeEllement.ObjectCoordinate.X;
+                        : snakeEllement.ObjectCoordinateX;
                     break;
 
                 case Direction.Pause:
@@ -163,14 +162,24 @@ namespace SnakeGameWPF
             }
 
             for (int i = scene.Snake.Count - 1; i > 1; i--)
-                scene.Snake[i].ObjectCoordinate = scene.Snake[i - 1].ObjectCoordinate;
+            {
+                scene.Snake[i].ObjectCoordinateX = scene.Snake[i - 1].ObjectCoordinateX;
+                scene.Snake[i].ObjectCoordinateY = scene.Snake[i - 1].ObjectCoordinateY;
+            }
 
-            scene.Snake[1].ObjectCoordinate = subPosition;
+            scene.Snake[1].ObjectCoordinateX = subPositionX;
+            scene.Snake[1].ObjectCoordinateY = subPositionY;
         }
 
         public void GetFoolColection()
         {
+            FoolCoolection.Clear();
 
+            foreach (var fruit in scene.Fruits) FoolCoolection.Add(fruit);
+
+            foreach (var stone in scene.Stones) FoolCoolection.Add(stone);
+
+            foreach (var snake in scene.Snake) FoolCoolection.Add(snake);
         }
         /// <summary>
         /// Проверяет на совпадение координаты змеи и всех обьектов.
@@ -181,8 +190,8 @@ namespace SnakeGameWPF
         private GameObject GetObjectToRemove(List<GameObject> gameObjects)
         {
             foreach (var item in gameObjects)
-                if (Math.Abs(scene.Snake[0].ObjectCoordinate.X - item.ObjectCoordinate.X) <= gameSettings.ShiftStep * 4)
-                    if (Math.Abs(scene.Snake[0].ObjectCoordinate.Y - item.ObjectCoordinate.Y) <= gameSettings.ShiftStep * 4)
+                if (Math.Abs(scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= gameSettings.ShiftStep * 4)
+                    if (Math.Abs(scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= gameSettings.ShiftStep * 4)
                         return item;
             return null;
         }
@@ -197,8 +206,8 @@ namespace SnakeGameWPF
                 return false;
 
             for (var i = 4; i < scene.Snake.Count; i++)
-                if (Math.Abs(scene.Snake[0].ObjectCoordinate.X - scene.Snake[i].ObjectCoordinate.X) <= gameSettings.ShiftStep)
-                    if (Math.Abs(scene.Snake[0].ObjectCoordinate.Y - scene.Snake[i].ObjectCoordinate.Y) <= gameSettings.ShiftStep)
+                if (Math.Abs(scene.Snake[0].ObjectCoordinateX - scene.Snake[i].ObjectCoordinateX) <= gameSettings.ShiftStep)
+                    if (Math.Abs(scene.Snake[0].ObjectCoordinateY - scene.Snake[i].ObjectCoordinateY) <= gameSettings.ShiftStep)
                         return true;
             return false;
         }
@@ -224,6 +233,7 @@ namespace SnakeGameWPF
             timer.Stop();
             mainWindow.ApplyBlur();
             //window2.Owner = mainWindow;
+            
             dialogWindow.Label.Content = "У вас не осталось жизней.\nКонец игры !!!";
             dialogWindow.Button.Content = "Заново";
             dialogWindow.Show();

@@ -15,21 +15,11 @@ namespace SnakeGameWPF
 
         public override GameObject GetObject()
         {
-            var point = new Point()
-            {
-                X = (new Random().Next(1, 45)) * 15,
-                Y = (new Random().Next(1, 45)) * 15
-            };
-
             GameObject fruit = new Fruit()
             {
-                ObjectCoordinate = point,
-                ObjectImage = new Image
-                {
-                    Height = 30,
-                    Width = 30,
-                    Source = new BitmapImage(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\apple.png"))
-                },
+                ObjectCoordinateX = (new Random().Next(1, 45)) * 15,
+                ObjectCoordinateY = (new Random().Next(1, 45)) * 15,
+                ObjectImage = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\apple.png")),
                 ObjectType = GameObjectType.Fruit
             };
             return fruit;
@@ -37,7 +27,7 @@ namespace SnakeGameWPF
 
         public List<GameObject> GetFruites()
         {
-            List<GameObject> fruites = new List<GameObject>();
+            var fruites = new List<GameObject>();
 
             for (int i = 0; i < GameSettings.StartNomberOfFruits; i++)
             {
