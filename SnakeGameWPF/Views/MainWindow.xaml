@@ -102,7 +102,7 @@
                 <TextBlock x:Name="TextBlock1" 
                        Grid.Row="1" Grid.Column="1">
                 <Run Text=" Жизни - "/>
-                <Run Text="{Binding SnakeLife}"/>
+                <Run Text="{Binding Life}"/>
                 </TextBlock>
 
                 <TextBlock x:Name="TextBlock2" 

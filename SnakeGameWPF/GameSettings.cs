@@ -1,9 +1,6 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
-namespace SnakeGameWPF
+﻿namespace SnakeGameWPF
 {
-    class GameSettings : INotifyPropertyChanged
+    class GameSettings
     {
         public int GameFildWidth { get; } = 680;
 
@@ -23,44 +20,10 @@ namespace SnakeGameWPF
 
         public int SnakeSpeed { get; set; } = 100;
 
-        private int level = 1;
-        public int Level
-        {
-            get { return level; }
-            set 
-            {
-                level = value;
-                OnPropertyChanged();
-            }
-        }
+        public int Level { get; set; } = 1;
 
-        private int snakeLife = 3;
-        public int SnakeLife
-        {
-            get { return snakeLife; }
-            set
-            {
-                snakeLife = value;
-                OnPropertyChanged();
-            }
-        }
+        public int SnakeLife { get; set; } = 3;
 
-        private int score;
-        public int Score
-        {
-            get { return score; }
-            set
-            {
-                score = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
+        public int Score { get; set; }
     }
 };
-

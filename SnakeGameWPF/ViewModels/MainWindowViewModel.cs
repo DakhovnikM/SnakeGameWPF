@@ -12,26 +12,47 @@ namespace SnakeGameWPF.ViewModels
 {
     class MainWindowViewModel : BaseViewModel
     {
-        private readonly Scene scene;
+        Direction direction;
+        private readonly Scene _scene;
+        private GameSettings _gameSettings;
+        private readonly DispatcherTimer _timer;
 
-        public GameSettings gameSettings;
-
-        private readonly DispatcherTimer timer;
-
-        private int score;
+        #region Свойства
+        private int _score;
         public int Score
         {
-            get => score;
+            get => _score;
             set
             {
-                score = value;
+                _score = value;
                 OnPropertyChanged("Score");
             }
         }
 
-        public ObservableCollection<GameObject> GameCoolection { get; set; }
+        private int _life;
+        public int Life
+        {
+            get => _life;
+            set
+            {
+                _life = value;
+                OnPropertyChanged("Life");
+            }
+        }
 
-        Direction direction;
+        private int _level;
+        public int Level
+        {
+            get => _level;
+            set
+            {
+                _level = value;
+                OnPropertyChanged("Level");
+            }
+        }
+
+        public ObservableCollection<GameObject> GameCoolection { get; set; }
+        #endregion
 
         #region CTOR
         public MainWindowViewModel()
@@ -40,17 +61,19 @@ namespace SnakeGameWPF.ViewModels
         }
         public MainWindowViewModel(MainWindow mainWindow):this()
         {
-            gameSettings = new GameSettings();
-            scene = Scene.GetScene(gameSettings);
+            _gameSettings = new GameSettings();
+            _scene = Scene.GetScene(_gameSettings);
 
-            timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, gameSettings.SnakeSpeed) };
-            timer.Tick += GameCycle;
+            _timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, _gameSettings.SnakeSpeed) };
+            _timer.Tick += GameCycle;
 
             direction = Direction.Pause;
             mainWindow.KeyDown += MainWindow_KeyDown; ;
 
             GameCoolection = new ObservableCollection<GameObject>();
-            //Score = gameSettings.Score;
+            Score = _gameSettings.Score;
+            Life = _gameSettings.SnakeLife;
+            Level = _gameSettings.Level;
             GetGameColection();
         }
         #endregion
@@ -73,10 +96,10 @@ namespace SnakeGameWPF.ViewModels
 
             if (e.Key == Key.Space)
             {
-                if (timer.IsEnabled) timer.Stop();
+                if (_timer.IsEnabled) _timer.Stop();
                 else
                 {
-                    timer.Start();
+                    _timer.Start();
                     direction = Direction.Up;
                 }
             }
@@ -90,16 +113,16 @@ namespace SnakeGameWPF.ViewModels
         private void GameCycle(object sender, EventArgs e)
         {
             bool snakeBitItSelf = SnakeHeadPositionMatchBody();
-            if (snakeBitItSelf) gameSettings.SnakeLife--;
+            if (snakeBitItSelf) Life--;
 
             bool canAddStone = false;
-            GameObject objToRemove = GetObjectToRemove(scene.Fruits);
-
+            
+            GameObject objToRemove = GetObjectToRemove(_scene.Fruits);
             if (objToRemove is Fruit fruit)
             {
-                scene.Fruits.Remove(fruit);
-                scene.AddNewFruitToFruits();
-                scene.AddNewSnakeBodyEllement();
+                _scene.Fruits.Remove(fruit);
+                _scene.AddNewFruitToFruits();
+                _scene.AddNewSnakeBodyEllement();
 
                 Score++;
                 canAddStone = true;
@@ -107,16 +130,16 @@ namespace SnakeGameWPF.ViewModels
                 IncreaseSpeed();
             }
 
-            objToRemove = GetObjectToRemove(scene.Stones);
+            objToRemove = GetObjectToRemove(_scene.Stones);
             if (objToRemove is Stone stone)
             {
-                scene.Stones.Remove(stone);
-                gameSettings.SnakeLife--;
-                if (gameSettings.SnakeLife == 0) GameOver();
+                _scene.Stones.Remove(stone);
+                Life--;
+                if (Life == 0) GameOver();
             }
 
-            if (gameSettings.Score % 2 == 0 && canAddStone)
-                scene.AddNewStoneToStones();
+            if (Score % 2 == 0 && canAddStone)
+                _scene.AddNewStoneToStones();
 
             SetNewSnakePosition();
             GetGameColection();
@@ -127,36 +150,36 @@ namespace SnakeGameWPF.ViewModels
         /// </summary>
         public void SetNewSnakePosition()
         {
-            var snakeEllement = scene.Snake[0];
+            var snakeEllement = _scene.Snake[0];
             var subPositionX = snakeEllement.ObjectCoordinateX;
             var subPositionY = snakeEllement.ObjectCoordinateY;
             switch (direction)
             {
                 case Direction.Up:
-                    snakeEllement.ObjectCoordinateY -= gameSettings.ShiftStep;
+                    snakeEllement.ObjectCoordinateY -= _gameSettings.ShiftStep;
                     snakeEllement.ObjectCoordinateY = snakeEllement.ObjectCoordinateY < 0
-                        ? gameSettings.GameFildWidth
+                        ? _gameSettings.GameFildWidth
                         : snakeEllement.ObjectCoordinateY;
                     break;
 
                 case Direction.Down:
-                    snakeEllement.ObjectCoordinateY += gameSettings.ShiftStep;
-                    snakeEllement.ObjectCoordinateY = snakeEllement.ObjectCoordinateY > gameSettings.GameFildWidth
+                    snakeEllement.ObjectCoordinateY += _gameSettings.ShiftStep;
+                    snakeEllement.ObjectCoordinateY = snakeEllement.ObjectCoordinateY > _gameSettings.GameFildWidth
                         ? 0
                         : snakeEllement.ObjectCoordinateY;
                     break;
 
                 case Direction.Right:
-                    snakeEllement.ObjectCoordinateX += gameSettings.ShiftStep;
-                    snakeEllement.ObjectCoordinateX = snakeEllement.ObjectCoordinateX > gameSettings.GameFildWidth
+                    snakeEllement.ObjectCoordinateX += _gameSettings.ShiftStep;
+                    snakeEllement.ObjectCoordinateX = snakeEllement.ObjectCoordinateX > _gameSettings.GameFildWidth
                         ? 0
                         : snakeEllement.ObjectCoordinateX;
                     break;
 
                 case Direction.Left:
-                    snakeEllement.ObjectCoordinateX -= gameSettings.ShiftStep;
+                    snakeEllement.ObjectCoordinateX -= _gameSettings.ShiftStep;
                     snakeEllement.ObjectCoordinateX = snakeEllement.ObjectCoordinateX < 0
-                        ? gameSettings.GameFildWidth
+                        ? _gameSettings.GameFildWidth
                         : snakeEllement.ObjectCoordinateX;
                     break;
 
@@ -164,14 +187,14 @@ namespace SnakeGameWPF.ViewModels
                     return;
             }
 
-            for (int i = scene.Snake.Count - 1; i > 1; i--)
+            for (int i = _scene.Snake.Count - 1; i > 1; i--)
             {
-                scene.Snake[i].ObjectCoordinateX = scene.Snake[i - 1].ObjectCoordinateX;
-                scene.Snake[i].ObjectCoordinateY = scene.Snake[i - 1].ObjectCoordinateY;
+                _scene.Snake[i].ObjectCoordinateX = _scene.Snake[i - 1].ObjectCoordinateX;
+                _scene.Snake[i].ObjectCoordinateY = _scene.Snake[i - 1].ObjectCoordinateY;
             }
 
-            scene.Snake[1].ObjectCoordinateX = subPositionX;
-            scene.Snake[1].ObjectCoordinateY = subPositionY;
+            _scene.Snake[1].ObjectCoordinateX = subPositionX;
+            _scene.Snake[1].ObjectCoordinateY = subPositionY;
         }
 
         /// <summary>
@@ -181,11 +204,11 @@ namespace SnakeGameWPF.ViewModels
         {
             GameCoolection.Clear();
 
-            foreach (var fruit in scene.Fruits) GameCoolection.Add(fruit);
+            foreach (var fruit in _scene.Fruits) GameCoolection.Add(fruit);
 
-            foreach (var stone in scene.Stones) GameCoolection.Add(stone);
+            foreach (var stone in _scene.Stones) GameCoolection.Add(stone);
 
-            foreach (var snake in scene.Snake) GameCoolection.Add(snake);
+            foreach (var snake in _scene.Snake) GameCoolection.Add(snake);
         }
 
         /// <summary>
@@ -197,8 +220,8 @@ namespace SnakeGameWPF.ViewModels
         private GameObject GetObjectToRemove(List<GameObject> gameObjects)
         {
             foreach (var item in gameObjects)
-                if (Math.Abs(scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= gameSettings.ShiftStep * 4)
-                    if (Math.Abs(scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= gameSettings.ShiftStep * 4)
+                if (Math.Abs(_scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep * 4)
+                    if (Math.Abs(_scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep * 4)
                         return item;
             return null;
         }
@@ -209,12 +232,12 @@ namespace SnakeGameWPF.ViewModels
         /// <returns>true, false</returns>
         public bool SnakeHeadPositionMatchBody()
         {
-            if (scene.Snake.Count < 5)
+            if (_scene.Snake.Count < 5)
                 return false;
 
-            for (var i = 4; i < scene.Snake.Count; i++)
-                if (Math.Abs(scene.Snake[0].ObjectCoordinateX - scene.Snake[i].ObjectCoordinateX) <= gameSettings.ShiftStep)
-                    if (Math.Abs(scene.Snake[0].ObjectCoordinateY - scene.Snake[i].ObjectCoordinateY) <= gameSettings.ShiftStep)
+            for (var i = 4; i < _scene.Snake.Count; i++)
+                if (Math.Abs(_scene.Snake[0].ObjectCoordinateX - _scene.Snake[i].ObjectCoordinateX) <= _gameSettings.ShiftStep)
+                    if (Math.Abs(_scene.Snake[0].ObjectCoordinateY - _scene.Snake[i].ObjectCoordinateY) <= _gameSettings.ShiftStep)
                         return true;
             return false;
         }
@@ -224,20 +247,20 @@ namespace SnakeGameWPF.ViewModels
         ///</summary>
         private void IncreaseSpeed()
         {
-            if (gameSettings.Score % 3 == 0)
+            if (Score % 3 == 0)
             {
-                if (gameSettings.SnakeSpeed > 10)
+                if (_gameSettings.SnakeSpeed > 10)
                 {
-                    gameSettings.SnakeSpeed -= 2;
-                    gameSettings.Level++;
-                    timer.Interval = new TimeSpan(0, 0, 0, 0, gameSettings.SnakeSpeed);
+                    _gameSettings.SnakeSpeed -= 2;
+                    Level++;
+                    _timer.Interval = new TimeSpan(0, 0, 0, 0, _gameSettings.SnakeSpeed);
                 }
             }
         }
 
         private void GameOver()
         {
-            timer.Stop();
+            _timer.Stop();
             //mainWindow.ApplyBlur();
             //window2.Owner = mainWindow;
 
@@ -246,104 +269,5 @@ namespace SnakeGameWPF.ViewModels
             //dialogWindow.Show();
             //window2.TextBlock_W2.Text = Window2DisplayInfo();
         }
-
-        #region Beta
-
-
-
-        //    /// <summary>
-        //    /// Проверяет столкнулась ли змея со своим телом.
-        //    /// </summary>
-        //    /// <returns></returns>
-        //    private bool DidSnakeBiteItSelf() => snake.HeadCoordMatchBody();
-
-
-
-        //    private void MainWindowDisplayInfo()
-        //    {
-        //        mainWindow.TextBlock.Text = $"Фрукты   {Score}";
-        //        mainWindow.TextBlock1.Text = $"Уровень  {GameLevel}";
-        //        mainWindow.TextBlock2.Text = $"Камни    {stonesCollection.Count}";
-        //        mainWindow.TextBlock3.Text = $"Жизни    {Life}";
-        //        mainWindow.TextBlock4.Text = $"Время    {timeSpan.Minutes}:{timeSpan.Seconds}";
-        //    }
-
-        //    private string Window2DisplayInfo()
-        //    {
-        //        return Score == 0
-        //                     ? "К сожалению вы не превзошли предыдущий рекорд. Попробуйте еще раз."
-        //                     : $"ПОЗДРАВЛЯЕМ!!! Вы установили новый рекорд!!! {Score}";
-        //    }
-
-        //    private void GameInit()
-        //    {
-        //        snakeBitItSelf = false;
-        //        snakeCollideStone = false;
-        //        GameLevel = 0;
-        //        Score = 0;
-        //        Life = 3;
-        //        stopWatch.Reset();
-        //        mainWindow.canvas.Children.Clear();
-        //        ObjectsInit();
-        //        PlacementObjectsOnCanvas();
-        //    }
-
-        //    private void ObjectsInit()
-        //    {
-        //        fruitCollection = new FruitsCollection(3);
-        //        snake = new Snake(fieldSize, shiftStep);
-        //        stonesCollection = new StonesCollection();
-        //    }
-
-        //    #region Events
-        //    private void MainWindowLoaded(object sender, EventArgs e)
-        //    {
-        //        GameInit();
-        //    }
-
-        //    private void MainWindowKeyDown(object sender, KeyEventArgs e)
-        //    {
-
-        //        if (e.Key == Key.Space)
-        //        {
-        //            if (stopWatch.IsRunning)
-        //                stopWatch.Stop();
-        //            else
-        //                stopWatch.Start();
-
-        //            if (timer.IsEnabled)
-        //            {
-        //                window3.Owner = mainWindow;
-        //                mainWindow.ApplyBlur();
-        //                window3.Visibility = Visibility.Visible;
-        //                timer.Stop();
-        //            }
-        //            else
-        //            {
-        //                mainWindow.ClearBlur();
-        //                timer.Start();
-        //            }
-        //        }
-        //        snake.SetMoveDirection(e);
-        //    }
-
-        //    private void Window3KeyDown(object sender, KeyEventArgs e)
-        //    {
-        //        if (e.Key == Key.Space)
-        //        {
-        //            window3.Hide();
-        //            mainWindow.ClearBlur();
-        //            timer.Start();
-        //            stopWatch.Start();
-        //        }
-        //    }
-
-        //    private void Window2B1Click(object sender, EventArgs e)
-        //    {
-        //        GameInit();
-        //        mainWindow.ClearBlur();
-        //        window2.Hide();
-        //    }
-        #endregion
     }
 }
