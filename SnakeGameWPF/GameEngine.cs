@@ -10,7 +10,7 @@ using System.Windows.Threading;
 
 namespace SnakeGameWPF
 {
-    class GameEngine : BaseViewModel
+    class GameEngine
     {
         private readonly Scene scene;
 
@@ -18,11 +18,11 @@ namespace SnakeGameWPF
 
         readonly MainWindow mainWindow;
 
-        readonly DialogWindow dialogWindow;
+        //readonly DialogWindow dialogWindow;
 
         private readonly DispatcherTimer timer;
 
-        public ObservableCollection<GameObject> FoolCoolection { get; set; }
+        public ObservableCollection<GameObject> GameCoolection { get; set; }
 
         Direction direction;
 
@@ -32,10 +32,10 @@ namespace SnakeGameWPF
 
         }
 
-        public GameEngine(MainWindow mainWindow, DialogWindow dialogWindow) : this()
+        public GameEngine(MainWindow mainWindow) : this()
         {
             this.mainWindow = mainWindow;
-            this.dialogWindow = dialogWindow;
+            //this.dialogWindow = dialogWindow;
 
             gameSettings = new GameSettings();
             scene = Scene.GetScene(gameSettings);
@@ -46,8 +46,8 @@ namespace SnakeGameWPF
             direction = Direction.Pause;
             mainWindow.KeyDown += MainWindow_KeyDown; ;
 
-            FoolCoolection = new ObservableCollection<GameObject>();
-            GetFoolColection();
+            GameCoolection = new ObservableCollection<GameObject>();
+            GetGameColection();
         }
         #endregion
 
@@ -116,7 +116,7 @@ namespace SnakeGameWPF
 
             mainWindow.canvas.Children.Clear();
             SetNewSnakePosition();
-            GetFoolColection();
+            GetGameColection();
         }
 
         /// <summary>
@@ -171,15 +171,18 @@ namespace SnakeGameWPF
             scene.Snake[1].ObjectCoordinateY = subPositionY;
         }
 
-        public void GetFoolColection()
+        /// <summary>
+        /// Объединяет все игровые элементы в одну коллекцию.
+        /// </summary>
+        public void GetGameColection()
         {
-            FoolCoolection.Clear();
+            GameCoolection.Clear();
 
-            foreach (var fruit in scene.Fruits) FoolCoolection.Add(fruit);
+            foreach (var fruit in scene.Fruits) GameCoolection.Add(fruit);
 
-            foreach (var stone in scene.Stones) FoolCoolection.Add(stone);
+            foreach (var stone in scene.Stones) GameCoolection.Add(stone);
 
-            foreach (var snake in scene.Snake) FoolCoolection.Add(snake);
+            foreach (var snake in scene.Snake) GameCoolection.Add(snake);
         }
         /// <summary>
         /// Проверяет на совпадение координаты змеи и всех обьектов.
@@ -233,10 +236,10 @@ namespace SnakeGameWPF
             timer.Stop();
             mainWindow.ApplyBlur();
             //window2.Owner = mainWindow;
-            
-            dialogWindow.Label.Content = "У вас не осталось жизней.\nКонец игры !!!";
-            dialogWindow.Button.Content = "Заново";
-            dialogWindow.Show();
+
+            //dialogWindow.Label.Content = "У вас не осталось жизней.\nКонец игры !!!";
+            //dialogWindow.Button.Content = "Заново";
+            //dialogWindow.Show();
             //window2.TextBlock_W2.Text = Window2DisplayInfo();
         }
 

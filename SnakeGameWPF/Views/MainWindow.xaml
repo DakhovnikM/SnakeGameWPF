@@ -57,7 +57,7 @@
                 Background="Bisque" 
                 Height="700" Width="700"/>
 
-            <ItemsControl ItemsSource="{Binding FoolCoolection}">
+            <ItemsControl ItemsSource="{Binding GameCoolection}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas/>
