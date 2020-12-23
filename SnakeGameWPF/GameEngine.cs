@@ -16,10 +16,6 @@ namespace SnakeGameWPF
 
         public GameSettings gameSettings;
 
-        readonly MainWindow mainWindow;
-
-        //readonly DialogWindow dialogWindow;
-
         private readonly DispatcherTimer timer;
 
         public ObservableCollection<GameObject> GameCoolection { get; set; }
@@ -34,9 +30,6 @@ namespace SnakeGameWPF
 
         public GameEngine(MainWindow mainWindow) : this()
         {
-            this.mainWindow = mainWindow;
-            //this.dialogWindow = dialogWindow;
-
             gameSettings = new GameSettings();
             scene = Scene.GetScene(gameSettings);
 
@@ -114,7 +107,6 @@ namespace SnakeGameWPF
             if (gameSettings.Score % 2 == 0 && canAddStone)
                 scene.AddNewStoneToStones();
 
-            mainWindow.canvas.Children.Clear();
             SetNewSnakePosition();
             GetGameColection();
         }
@@ -234,7 +226,7 @@ namespace SnakeGameWPF
         private void GameOver()
         {
             timer.Stop();
-            mainWindow.ApplyBlur();
+            //mainWindow.ApplyBlur();
             //window2.Owner = mainWindow;
 
             //dialogWindow.Label.Content = "У вас не осталось жизней.\nКонец игры !!!";
