@@ -22,6 +22,8 @@ namespace SnakeGameWPF
 
         private readonly DispatcherTimer timer;
 
+        public ObservableCollection<GameObject> FoolCoolection { get; set; }
+
         Direction direction;
 
         #region CTOR
@@ -166,6 +168,10 @@ namespace SnakeGameWPF
             scene.Snake[1].ObjectCoordinate = subPosition;
         }
 
+        public void GetFoolColection()
+        {
+
+        }
         /// <summary>
         /// Проверяет на совпадение координаты змеи и всех обьектов.
         /// </summary>

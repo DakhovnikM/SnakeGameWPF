@@ -55,11 +55,7 @@
             <Canvas Name="canvas" 
                 Grid.Column="0" 
                 Background="Bisque" 
-                Height="700" Width="700">
-                <Canvas.Children>
-                    <ItemsControl ItemsSource="{Binding}"></ItemsControl>
-                </Canvas.Children>
-            </Canvas>
+                Height="700" Width="700"/>
 
             <Grid x:Name="Grid0" 
               Grid.Column="1" 
