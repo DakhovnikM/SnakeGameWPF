@@ -21,9 +21,9 @@
     <Window.DataContext>
         <dc:MainWindowViewModel/>
     </Window.DataContext>
-    <!--<Window.InputBindings>
-        <KeyBinding Command="{Binding KeyUpCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"/>
-    </Window.InputBindings>-->
+    <Window.InputBindings>
+        <KeyBinding Key="Up" Command="{Binding KeyCommand}"/>
+    </Window.InputBindings>
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="24"/>

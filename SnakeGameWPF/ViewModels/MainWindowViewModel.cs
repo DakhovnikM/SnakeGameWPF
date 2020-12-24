@@ -1,9 +1,11 @@
-﻿using SnakeGameWPF.Models;
+﻿using SnakeGameWPF.Commands;
+using SnakeGameWPF.Models;
 using SnakeGameWPF.Views;
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -53,6 +55,15 @@ namespace SnakeGameWPF.ViewModels
         public ObservableCollection<GameObject> GameCoolection { get; private set; }
         #endregion
 
+        #region Команды
+        public ICommand KeyCommand { get; set; }
+        private bool CanExecuteKeyCommand(object p) => true;
+        private void OnExecutedKeyCommand(object p)
+        {
+            direction=Direction.Up;
+        }
+        #endregion
+
         #region CTOR
         public MainWindowViewModel()
         {
@@ -75,6 +86,8 @@ namespace SnakeGameWPF.ViewModels
 
             GameCoolection = new ObservableCollection<GameObject>();
             GetGameColection();
+
+            KeyCommand = new RelayCommand( OnExecutedKeyCommand, CanExecuteKeyCommand);
         }
         #endregion
 
@@ -261,7 +274,7 @@ namespace SnakeGameWPF.ViewModels
             _timer.Stop();
             //mainWindow.ApplyBlur();
             //window2.Owner = mainWindow;
-
+            MessageBox.Show("У вас не осталось жизней.\nКонец игры !!!", "КОНЕЦ ИГРЫ", MessageBoxButton.OKCancel);
             //dialogWindow.Label.Content = "У вас не осталось жизней.\nКонец игры !!!";
             //dialogWindow.Button.Content = "Заново";
             //dialogWindow.Show();
