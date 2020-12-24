@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace SnakeGameWPF
+namespace SnakeGameWPF.Models
 {
     class FruitFactory : GameObjectFactory
     {

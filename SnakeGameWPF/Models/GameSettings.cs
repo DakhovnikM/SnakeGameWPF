@@ -1,4 +1,4 @@
-﻿namespace SnakeGameWPF
+﻿namespace SnakeGameWPF.Models
 {
     class GameSettings
     {

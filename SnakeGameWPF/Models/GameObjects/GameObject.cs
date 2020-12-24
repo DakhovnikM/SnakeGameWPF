@@ -1,7 +1,6 @@
-﻿using System.Windows;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
-namespace SnakeGameWPF
+namespace SnakeGameWPF.Models
 {
     abstract class GameObject
     {

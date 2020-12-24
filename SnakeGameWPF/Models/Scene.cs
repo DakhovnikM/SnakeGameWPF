@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows;
 
-namespace SnakeGameWPF
+namespace SnakeGameWPF.Models
 {
     class Scene
     {
@@ -44,7 +42,7 @@ namespace SnakeGameWPF
             Snake.Add(snakeEllement);
         }
 
-        public void AddNewFruitToFruits()
+        public void AddNewFruitToFruits() //TODO Реализовать универсальный метод
         {
             do
             {

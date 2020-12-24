@@ -40,7 +40,7 @@
             </StatusBarItem>
 
             <StatusBarItem>
-                <TextBlock Text="{Binding SnakeLife, StringFormat=Жизни:{0}}"/>
+                <TextBlock Text="{Binding Life, StringFormat=Жизни:{0}}"/>
             </StatusBarItem>
 
             <StatusBarItem>

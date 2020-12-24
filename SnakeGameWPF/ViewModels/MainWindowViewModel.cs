@@ -1,10 +1,9 @@
-﻿using SnakeGameWPF.ViewModels;
+﻿using SnakeGameWPF.Models;
 using SnakeGameWPF.Views;
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -59,7 +58,7 @@ namespace SnakeGameWPF.ViewModels
         {
 
         }
-        public MainWindowViewModel(MainWindow mainWindow):this()
+        public MainWindowViewModel(MainWindow mainWindow) : this()
         {
             _gameSettings = new GameSettings();
             _scene = Scene.GetScene(_gameSettings);
@@ -117,7 +116,7 @@ namespace SnakeGameWPF.ViewModels
             if (snakeBitItSelf) Life--;
 
             bool canAddStone = false;
-            
+
             GameObject objToRemove = GetObjectToRemove(_scene.Fruits);
             if (objToRemove is Fruit fruit)
             {
@@ -211,7 +210,7 @@ namespace SnakeGameWPF.ViewModels
         }
 
         /// <summary>
-        /// Проверяет на совпадение координаты змеи и всех обьектов.
+        /// Проверяет на совпадение координаты змеи и обьектов, если такой обьект имеется он возвращается для дальнейшего удаления из коллекции.
         /// </summary>
         /// <param name="gameObject"></param>
         /// <param name="gameObjects"></param>
@@ -219,8 +218,8 @@ namespace SnakeGameWPF.ViewModels
         private GameObject GetObjectToRemove(IList<GameObject> gameObjects)
         {
             foreach (var item in gameObjects)
-                if (Math.Abs(_scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep * 4)
-                    if (Math.Abs(_scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep * 4)
+                if (Math.Abs(_scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep * 2)
+                    if (Math.Abs(_scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep * 2)
                         return item;
             return null;
         }

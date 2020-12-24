@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace SnakeGameWPF
+﻿namespace SnakeGameWPF.Models
 {
     abstract class GameObjectFactory
     {

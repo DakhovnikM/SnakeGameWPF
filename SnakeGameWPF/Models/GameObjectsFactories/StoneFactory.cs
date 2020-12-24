@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace SnakeGameWPF
+namespace SnakeGameWPF.Models
 {
     class StoneFactory : GameObjectFactory
     {
@@ -34,7 +32,7 @@ namespace SnakeGameWPF
                 GameObject stone = GetObject();
                 stones.Add(stone);
             }
-           return stones;
+            return stones;
         }
     }
 }
