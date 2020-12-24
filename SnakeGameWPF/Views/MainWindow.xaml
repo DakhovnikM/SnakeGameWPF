@@ -64,7 +64,7 @@
                 Background="Bisque" 
                 Height="700" Width="700"/>
 
-            <ItemsControl ItemsSource="{Binding GameCollection}">
+            <ItemsControl ItemsSource="{Binding GameObjectsCollection}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas/>
@@ -128,8 +128,7 @@
                     Content="ЗАНОВО" 
                     Background="LightGray" 
                     FontSize="22" 
-                    Margin="0 0 0 15" 
-                    Click="Btn_Restart_Click"/>
+                    Margin="0 0 0 15"/>
 
                 <Button x:Name="Btn_Exit"  
                     Grid.Row="5" Grid.Column="1" 
@@ -138,7 +137,6 @@
                     Content="ВЫХОД" 
                     Background="LightGray" 
                     FontSize="22" 
-                    Click="MW_B_Exit_Click" 
                     Margin="0 0 0 15"/>
             </Grid>
         </Grid>

@@ -56,7 +56,7 @@ namespace SnakeGameWPF.ViewModels
             }
         }
 
-        public ObservableCollection<GameObject> GameCollection { get; private set; }
+        public ObservableCollection<GameObject> GameObjectsCollection { get; private set; }
         #endregion
 
         #region Команды
@@ -116,14 +116,16 @@ namespace SnakeGameWPF.ViewModels
             Life = _gameSettings.SnakeLife;
             Level = _gameSettings.Level;
 
-            GameCollection = new ObservableCollection<GameObject>();
-            GetGameCollection();
+            GameObjectsCollection = new ObservableCollection<GameObject>();
+            GetGameObjectsCollection();
 
+            #region Создание команд
             KeyUpCommand = new RelayCommand(OnExecutedKeyUpCommand, CanExecuteKeyUpCommand);
             KeyDownCommand = new RelayCommand(OnExecutedKeyDownCommand, CanExecuteKeyDownCommand);
             KeyRightCommand = new RelayCommand(OnExecutedKeyRightCommand, CanExecuteKeyRightCommand);
             KeyLeftCommand = new RelayCommand(OnExecutedKeyLeftCommand, CanExecuteKeyLeftCommand);
             KeySpaceCommand = new RelayCommand(OnExecutedKeySpaceCommand, CanExecuteKeySpaceCommand);
+            #endregion
         }
         #endregion
 
@@ -163,15 +165,15 @@ namespace SnakeGameWPF.ViewModels
             if (Score % 2 == 0 && canAddStone)
                 _scene.AddNewStoneToStones();
 
-            SetNewSnakePosition();
-            GameCollection.Clear();
-            GetGameCollection();
+            MoveSnake();
+            GameObjectsCollection.Clear();
+            GetGameObjectsCollection();
         }
 
         /// <summary>
         /// Перемещает змею на новую позицию.
         /// </summary>
-        private void SetNewSnakePosition()
+        private void MoveSnake()
         {
             var snakeElement = _scene.Snake[0];
             var subPositionX = snakeElement.ObjectCoordinateX;
@@ -223,11 +225,11 @@ namespace SnakeGameWPF.ViewModels
         /// <summary>
         /// Объединяет все игровые элементы в одну коллекцию.
         /// </summary>
-        private void GetGameCollection()
+        private void GetGameObjectsCollection()
         {
-            foreach (var fruit in _scene.Fruits) GameCollection.Add(fruit);
-            foreach (var stone in _scene.Stones) GameCollection.Add(stone);
-            foreach (var snake in _scene.Snake) GameCollection.Add(snake);
+            foreach (var fruit in _scene.Fruits) GameObjectsCollection.Add(fruit);
+            foreach (var stone in _scene.Stones) GameObjectsCollection.Add(stone);
+            foreach (var snake in _scene.Snake) GameObjectsCollection.Add(snake);
         }
 
         /// <summary>

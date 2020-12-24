@@ -35,13 +35,6 @@ namespace SnakeGameWPF.Views
             dialogWindow.Show();
         }
 
-        //private void W1_Btn_Ok_Click(object sender, EventArgs e)
-        //{
-        //    Btn_Exit.IsEnabled = true;
-        //    ClearBlur();
-        //    dialogWindow.Close();
-        //}
-
         public void ApplyBlur()
         {
             var blurEffect = new BlurEffect() { Radius = 15 };
@@ -53,25 +46,10 @@ namespace SnakeGameWPF.Views
             Effect = null;
         }
 
-        public void DesableBtnExit()
-        {
-            Btn_Exit.IsEnabled = false;
-        }
-
-        public void EnableBtnExit()
-        {
-            Btn_Exit.IsEnabled = true;
-        }
-
         private void MW_Loaded(object sender, RoutedEventArgs e)
         {
             //TextBox.Text = "СЧЁТ : ";
         }
-
-        //private void MW_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    //if (e.Key == Key.Space) ApplyBlur(); 
-        //}
 
         private void MW_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -81,16 +59,6 @@ namespace SnakeGameWPF.Views
         private void MW_B_Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
-        }
-
-        private void canvas_ImageFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-
-        }
-
-        private void Btn_Restart_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
