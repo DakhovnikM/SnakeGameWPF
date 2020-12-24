@@ -1,6 +1,6 @@
-﻿namespace SnakeGameWPF.Models
+﻿namespace SnakeGameWPF.Models.GameObjects
 {
-    enum GameObjectType
+    internal enum GameObjectType
     {
         Snake = 1,
         Stone = 2,

@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace SnakeGameWPF.Commands
 {
-    abstract class Command : ICommand
+    internal abstract class Command : ICommand
     {
         public event EventHandler CanExecuteChanged
         {

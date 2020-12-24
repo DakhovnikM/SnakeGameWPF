@@ -1,78 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using SnakeGameWPF.Models.GameObjects;
+using SnakeGameWPF.Models.GameObjectsFactories;
 
 namespace SnakeGameWPF.Models
 {
-    class Scene
+    internal class Scene
     {
-        public IList<GameObject> Fruits { get; private set; }
+        private readonly GameSettings _gameSettings;
 
-        public IList<GameObject> Stones { get; private set; }
+        private GameObject _newObject;
 
-        public IList<GameObject> Snake { get; private set; }
+        private static Scene _scene;
+        public IList<GameObject> Fruits { get; }
 
-        readonly GameSettings _gameSettings;
+        public IList<GameObject> Stones { get; }
 
-        private GameObject newObject;
+        public IList<GameObject> Snake { get; }
 
-        private static Scene scene;
-
-        private Scene() { }
 
         private Scene(GameSettings gameSettings)
         {
             _gameSettings = gameSettings;
             Stones = new StoneFactory(_gameSettings).GetStones();
-            Fruits = new FruitFactory(_gameSettings).GetFruites();
-            Snake = new SnakeFactory(_gameSettings).GetSnake();
+            Fruits = new FruitFactory(_gameSettings).GetFruits();
+            Snake = new SnakeFactory(_gameSettings).GetSnake();;
         }
 
         public static Scene GetScene(GameSettings gameSettings)
         {
-            if (scene == null)
-                scene = new Scene(gameSettings);
-
-            return scene;
+            return _scene ??= new Scene(gameSettings);
         }
 
-        public void AddNewSnakeBodyEllement()
+        public GameObject AddNewSnakeBodyElement()
         {
             var snakeFactory = new SnakeFactory(_gameSettings);
-            var snakeEllement = snakeFactory.GetObject();
-            Snake.Add(snakeEllement);
+            var snakeElement = snakeFactory.GetObject();
+            //Snake.Add(snakeElement);
+            return snakeElement;
         }
 
-        public void AddNewFruitToFruits() //TODO Реализовать универсальный метод
+        public GameObject AddNewFruitToFruits() //TODO Реализовать универсальный метод
         {
             do
             {
                 var fruitFactory = new FruitFactory(_gameSettings);
-                newObject = fruitFactory.GetObject();
+                _newObject = fruitFactory.GetObject();
 
-            } while (ObjectsPositionsMatched(newObject, Fruits));
-            Fruits.Add(newObject);
+            } while (ObjectsPositionsMatched(_newObject, Fruits));
+            //Fruits.Add(_newObject);
+            return _newObject;
         }
 
-        public void AddNewStoneToStones()
+        public GameObject AddNewStoneToStones()
         {
             do
             {
                 var stoneFactory = new StoneFactory(_gameSettings);
-                newObject = stoneFactory.GetObject();
+                _newObject = stoneFactory.GetObject();
 
-            } while (ObjectsPositionsMatched(newObject, Stones));
-            Stones.Add(newObject);
+            } while (ObjectsPositionsMatched(_newObject, Stones));
+            //Stones.Add(_newObject);
+            return _newObject;
         }
 
         private bool ObjectsPositionsMatched(GameObject gameObject, IList<GameObject> gameObjects)
         {
-            foreach (var item in gameObjects)
-            {
-                if (Math.Abs(gameObject.ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep)
-                    if (Math.Abs(gameObject.ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep)
-                        return true;
-            }
-            return false;
+            return gameObjects
+                .Where(item => Math.Abs(gameObject.ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep)
+                .Any(item => Math.Abs(gameObject.ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep);
         }
     }
 }

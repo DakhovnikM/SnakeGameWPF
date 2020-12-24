@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
+using SnakeGameWPF.Models.GameObjects;
 
-namespace SnakeGameWPF.Models
+namespace SnakeGameWPF.Models.GameObjectsFactories
 {
-    class FruitFactory : GameObjectFactory
+    internal class FruitFactory : GameObjectFactory
     {
         public FruitFactory(GameSettings gameSettings) : base(gameSettings)
         {
@@ -23,16 +24,16 @@ namespace SnakeGameWPF.Models
             return fruit;
         }
 
-        public IList<GameObject> GetFruites()
+        public IList<GameObject> GetFruits()
         {
-            var fruites = new List<GameObject>();
+            var fruits = new List<GameObject>();
 
-            for (int i = 0; i < GameSettings.StartNomberOfFruits; i++)
+            for (var i = 0; i < GameSettings.StartNomberOfFruits; i++)
             {
                 GameObject fruit = GetObject();
-                fruites.Add(fruit);
+                fruits.Add(fruit);
             }
-            return fruites;
+            return fruits;
         }
     }
 }

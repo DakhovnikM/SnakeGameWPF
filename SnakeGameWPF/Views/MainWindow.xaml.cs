@@ -21,7 +21,7 @@ namespace SnakeGameWPF.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel(this);
+            DataContext = new MainWindowViewModel();
             dialogWindow = new DialogWindow(this);
 
             this.Loaded += Window_Loaded;
@@ -68,10 +68,10 @@ namespace SnakeGameWPF.Views
             //TextBox.Text = "СЧЁТ : ";
         }
 
-        private void MW_KeyDown(object sender, KeyEventArgs e)
-        {
-            //if (e.Key == Key.Space) ApplyBlur(); 
-        }
+        //private void MW_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    //if (e.Key == Key.Space) ApplyBlur(); 
+        //}
 
         private void MW_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

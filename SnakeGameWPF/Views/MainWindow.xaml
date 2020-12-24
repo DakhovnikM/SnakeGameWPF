@@ -9,7 +9,6 @@
         mc:Ignorable="d"
         Title="SNAKE" Height="736" Width="936" 
         Loaded="MW_Loaded" 
-        KeyDown="MW_KeyDown" 
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen"
         MouseLeftButtonDown="MW_MouseLeftButtonDown"
@@ -21,9 +20,15 @@
     <Window.DataContext>
         <dc:MainWindowViewModel/>
     </Window.DataContext>
+    
     <Window.InputBindings>
-        <KeyBinding Key="Up" Command="{Binding KeyCommand}"/>
+        <KeyBinding Key="Up" Command="{Binding KeyUpCommand}"/>
+        <KeyBinding Key="Down" Command="{Binding KeyDownCommand}"/>
+        <KeyBinding Key="Left" Command="{Binding KeyLeftCommand}"/>
+        <KeyBinding Key="Right" Command="{Binding KeyRightCommand}"/>
+        <KeyBinding Key="Space" Command="{Binding KeySpaceCommand}"/>
     </Window.InputBindings>
+    
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="24"/>
@@ -59,7 +64,7 @@
                 Background="Bisque" 
                 Height="700" Width="700"/>
 
-            <ItemsControl ItemsSource="{Binding GameCoolection}">
+            <ItemsControl ItemsSource="{Binding GameCollection}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas/>

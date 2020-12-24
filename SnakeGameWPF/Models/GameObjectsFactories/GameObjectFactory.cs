@@ -1,6 +1,8 @@
-﻿namespace SnakeGameWPF.Models
+﻿using SnakeGameWPF.Models.GameObjects;
+
+namespace SnakeGameWPF.Models.GameObjectsFactories
 {
-    abstract class GameObjectFactory
+    internal abstract class GameObjectFactory
     {
         public GameSettings GameSettings { get; }
 

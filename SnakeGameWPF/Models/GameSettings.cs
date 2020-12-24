@@ -1,16 +1,16 @@
 ﻿namespace SnakeGameWPF.Models
 {
-    class GameSettings
+    internal class GameSettings
     {
-        public int GameFildWidth { get; } = 680;
+        public int GameFieldWidth { get; } = 680;
 
-        public int GameFildHeight { get; } = 680;
+        public int GameFieldHeight { get; } = 680;
 
         public int StartNomberOfFruits { get; set; } = 4;
 
         public int StartNomberOfStones { get; set; } = 15;
 
-        public int StartNomberOfSnakeEllements { get; set; } = 8;
+        public int StartNomberOfSnakeElements { get; set; } = 8;
 
         public double SnakeStartPositionX { get; } = 250;
 

@@ -5,15 +5,17 @@ using SnakeGameWPF.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using SnakeGameWPF.Models.GameObjects;
 
 namespace SnakeGameWPF.ViewModels
 {
-    class MainWindowViewModel : BaseViewModel
+    internal class MainWindowViewModel : BaseViewModel
     {
-        Direction direction;
+        private Direction _direction;
         private readonly Scene _scene;
         private readonly GameSettings _gameSettings;
         private readonly DispatcherTimer _timer;
@@ -37,6 +39,8 @@ namespace SnakeGameWPF.ViewModels
             set
             {
                 _life = value;
+                if (_life == 0)
+                    MessageBox.Show("У вас не осталось жизней.\nКонец игры !!!", "КОНЕЦ ИГРЫ", MessageBoxButton.OKCancel);
                 OnPropertyChanged("Life");
             }
         }
@@ -52,24 +56,53 @@ namespace SnakeGameWPF.ViewModels
             }
         }
 
-        public ObservableCollection<GameObject> GameCoolection { get; private set; }
+        public ObservableCollection<GameObject> GameCollection { get; private set; }
         #endregion
 
         #region Команды
-        public ICommand KeyCommand { get; set; }
-        private bool CanExecuteKeyCommand(object p) => true;
-        private void OnExecutedKeyCommand(object p)
+        public ICommand KeyUpCommand { get; set; }
+        private bool CanExecuteKeyUpCommand(object p) => true;
+        private void OnExecutedKeyUpCommand(object p)
         {
-            direction=Direction.Up;
+            if (_direction == Direction.Down) return;
+            _direction = Direction.Up;
+        }
+
+        public ICommand KeyDownCommand { get; set; }
+        private bool CanExecuteKeyDownCommand(object p) => true;
+        private void OnExecutedKeyDownCommand(object p)
+        {
+            if (_direction == Direction.Up) return;
+            _direction = Direction.Down;
+        }
+
+        public ICommand KeyRightCommand { get; set; }
+        private bool CanExecuteKeyRightCommand(object p) => true;
+        private void OnExecutedKeyRightCommand(object p)
+        {
+            if (_direction == Direction.Left) return;
+            _direction = Direction.Right;
+        }
+
+        public ICommand KeyLeftCommand { get; set; }
+        private bool CanExecuteKeyLeftCommand(object p) => true;
+        private void OnExecutedKeyLeftCommand(object p)
+        {
+            if (_direction == Direction.Right) return;
+            _direction = Direction.Left;
+        }
+
+        public ICommand KeySpaceCommand { get; set; }
+        private bool CanExecuteKeySpaceCommand(object p) => true;
+        private void OnExecutedKeySpaceCommand(object p)
+        {
+            if (_timer.IsEnabled) _timer.Stop();
+            else _timer.Start();
         }
         #endregion
 
         #region CTOR
         public MainWindowViewModel()
-        {
-
-        }
-        public MainWindowViewModel(MainWindow mainWindow) : this()
         {
             _gameSettings = new GameSettings();
             _scene = Scene.GetScene(_gameSettings);
@@ -77,46 +110,22 @@ namespace SnakeGameWPF.ViewModels
             _timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, _gameSettings.SnakeSpeed) };
             _timer.Tick += GameEngine;
 
-            direction = Direction.Pause;
-            mainWindow.KeyDown += MainWindow_KeyDown; ;
+            _direction = Direction.Up;
 
             Score = _gameSettings.Score;
             Life = _gameSettings.SnakeLife;
             Level = _gameSettings.Level;
 
-            GameCoolection = new ObservableCollection<GameObject>();
-            GetGameColection();
+            GameCollection = new ObservableCollection<GameObject>();
+            GetGameCollection();
 
-            KeyCommand = new RelayCommand( OnExecutedKeyCommand, CanExecuteKeyCommand);
+            KeyUpCommand = new RelayCommand(OnExecutedKeyUpCommand, CanExecuteKeyUpCommand);
+            KeyDownCommand = new RelayCommand(OnExecutedKeyDownCommand, CanExecuteKeyDownCommand);
+            KeyRightCommand = new RelayCommand(OnExecutedKeyRightCommand, CanExecuteKeyRightCommand);
+            KeyLeftCommand = new RelayCommand(OnExecutedKeyLeftCommand, CanExecuteKeyLeftCommand);
+            KeySpaceCommand = new RelayCommand(OnExecutedKeySpaceCommand, CanExecuteKeySpaceCommand);
         }
         #endregion
-
-        /// <summary>
-        /// обработчик нажатия клавиш главного окна.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
-        {
-            direction = e.Key switch
-            {
-                Key.Up => direction == Direction.Down ? direction : Direction.Up,
-                Key.Down => direction == Direction.Up ? direction : Direction.Down,
-                Key.Right => direction == Direction.Left ? direction : Direction.Right,
-                Key.Left => direction == Direction.Right ? direction : Direction.Left,
-                _ => direction
-            };
-
-            if (e.Key == Key.Space)
-            {
-                if (_timer.IsEnabled) _timer.Stop();
-                else
-                {
-                    _timer.Start();
-                    direction = Direction.Up;
-                }
-            }
-        }
 
         /// <summary>
         /// Основной цикл игры.
@@ -128,14 +137,14 @@ namespace SnakeGameWPF.ViewModels
             bool snakeBitItSelf = SnakeHeadPositionMatchBody();
             if (snakeBitItSelf) Life--;
 
-            bool canAddStone = false;
+            var canAddStone = false;
 
             GameObject objToRemove = GetObjectToRemove(_scene.Fruits);
             if (objToRemove is Fruit fruit)
             {
                 _scene.Fruits.Remove(fruit);
                 _scene.AddNewFruitToFruits();
-                _scene.AddNewSnakeBodyEllement();
+                _scene.AddNewSnakeBodyElement();
 
                 Score++;
                 canAddStone = true;
@@ -155,52 +164,53 @@ namespace SnakeGameWPF.ViewModels
                 _scene.AddNewStoneToStones();
 
             SetNewSnakePosition();
-            GetGameColection();
+            GameCollection.Clear();
+            GetGameCollection();
         }
 
         /// <summary>
-        /// Перемещает змею на новуюпозицию.
+        /// Перемещает змею на новую позицию.
         /// </summary>
-        public void SetNewSnakePosition()
+        private void SetNewSnakePosition()
         {
-            var snakeEllement = _scene.Snake[0];
-            var subPositionX = snakeEllement.ObjectCoordinateX;
-            var subPositionY = snakeEllement.ObjectCoordinateY;
-            switch (direction)
+            var snakeElement = _scene.Snake[0];
+            var subPositionX = snakeElement.ObjectCoordinateX;
+            var subPositionY = snakeElement.ObjectCoordinateY;
+            switch (_direction)
             {
                 case Direction.Up:
-                    snakeEllement.ObjectCoordinateY -= _gameSettings.ShiftStep;
-                    snakeEllement.ObjectCoordinateY = snakeEllement.ObjectCoordinateY < 0
-                        ? _gameSettings.GameFildWidth
-                        : snakeEllement.ObjectCoordinateY;
+                    snakeElement.ObjectCoordinateY -= _gameSettings.ShiftStep;
+                    snakeElement.ObjectCoordinateY = snakeElement.ObjectCoordinateY < 0
+                        ? _gameSettings.GameFieldWidth
+                        : snakeElement.ObjectCoordinateY;
                     break;
 
                 case Direction.Down:
-                    snakeEllement.ObjectCoordinateY += _gameSettings.ShiftStep;
-                    snakeEllement.ObjectCoordinateY = snakeEllement.ObjectCoordinateY > _gameSettings.GameFildWidth
+                    snakeElement.ObjectCoordinateY += _gameSettings.ShiftStep;
+                    snakeElement.ObjectCoordinateY = snakeElement.ObjectCoordinateY > _gameSettings.GameFieldWidth
                         ? 0
-                        : snakeEllement.ObjectCoordinateY;
+                        : snakeElement.ObjectCoordinateY;
                     break;
 
                 case Direction.Right:
-                    snakeEllement.ObjectCoordinateX += _gameSettings.ShiftStep;
-                    snakeEllement.ObjectCoordinateX = snakeEllement.ObjectCoordinateX > _gameSettings.GameFildWidth
+                    snakeElement.ObjectCoordinateX += _gameSettings.ShiftStep;
+                    snakeElement.ObjectCoordinateX = snakeElement.ObjectCoordinateX > _gameSettings.GameFieldWidth
                         ? 0
-                        : snakeEllement.ObjectCoordinateX;
+                        : snakeElement.ObjectCoordinateX;
                     break;
 
                 case Direction.Left:
-                    snakeEllement.ObjectCoordinateX -= _gameSettings.ShiftStep;
-                    snakeEllement.ObjectCoordinateX = snakeEllement.ObjectCoordinateX < 0
-                        ? _gameSettings.GameFildWidth
-                        : snakeEllement.ObjectCoordinateX;
+                    snakeElement.ObjectCoordinateX -= _gameSettings.ShiftStep;
+                    snakeElement.ObjectCoordinateX = snakeElement.ObjectCoordinateX < 0
+                        ? _gameSettings.GameFieldWidth
+                        : snakeElement.ObjectCoordinateX;
                     break;
 
                 case Direction.Pause:
                     return;
             }
 
-            for (int i = _scene.Snake.Count - 1; i > 1; i--)
+            for (var i = _scene.Snake.Count - 1; i > 1; i--)
             {
                 _scene.Snake[i].ObjectCoordinateX = _scene.Snake[i - 1].ObjectCoordinateX;
                 _scene.Snake[i].ObjectCoordinateY = _scene.Snake[i - 1].ObjectCoordinateY;
@@ -213,35 +223,31 @@ namespace SnakeGameWPF.ViewModels
         /// <summary>
         /// Объединяет все игровые элементы в одну коллекцию.
         /// </summary>
-        public void GetGameColection()
+        private void GetGameCollection()
         {
-            GameCoolection.Clear();
-
-            foreach (var fruit in _scene.Fruits) GameCoolection.Add(fruit);
-            foreach (var stone in _scene.Stones) GameCoolection.Add(stone);
-            foreach (var snake in _scene.Snake) GameCoolection.Add(snake);
+            foreach (var fruit in _scene.Fruits) GameCollection.Add(fruit);
+            foreach (var stone in _scene.Stones) GameCollection.Add(stone);
+            foreach (var snake in _scene.Snake) GameCollection.Add(snake);
         }
 
         /// <summary>
-        /// Проверяет на совпадение координаты змеи и обьектов, если такой обьект имеется он возвращается для дальнейшего удаления из коллекции.
+        /// Проверяет на совпадение координаты змеи и обьектов,
+        /// если такой обьект имеется он возвращается для дальнейшего удаления из коллекции.
         /// </summary>
-        /// <param name="gameObject"></param>
         /// <param name="gameObjects"></param>
         /// <returns></returns>
-        private GameObject GetObjectToRemove(IList<GameObject> gameObjects)
+        private GameObject GetObjectToRemove(IEnumerable<GameObject> gameObjects)
         {
-            foreach (var item in gameObjects)
-                if (Math.Abs(_scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep * 2)
-                    if (Math.Abs(_scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep * 2)
-                        return item;
-            return null;
+            return gameObjects
+                .Where(item => Math.Abs(_scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep * 2)
+                .FirstOrDefault(item => Math.Abs(_scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep * 2);
         }
 
         /// <summary>
         /// Проверяет на совпадение координат головы змеи и элементов ее тела.
         /// </summary>
         /// <returns>true, false</returns>
-        public bool SnakeHeadPositionMatchBody()
+        private bool SnakeHeadPositionMatchBody()
         {
             if (_scene.Snake.Count < 5)
                 return false;
@@ -258,15 +264,12 @@ namespace SnakeGameWPF.ViewModels
         ///</summary>
         private void IncreaseSpeed()
         {
-            if (Score % 3 == 0)
-            {
-                if (_gameSettings.SnakeSpeed > 10)
-                {
-                    _gameSettings.SnakeSpeed -= 2;
-                    Level++;
-                    _timer.Interval = new TimeSpan(0, 0, 0, 0, _gameSettings.SnakeSpeed);
-                }
-            }
+            if (Score % 3 != 0) return;
+            if (_gameSettings.SnakeSpeed <= 10) return;
+
+            _gameSettings.SnakeSpeed -= 2;
+            Level++;
+            _timer.Interval = new TimeSpan(0, 0, 0, 0, _gameSettings.SnakeSpeed);
         }
 
         private void GameOver()
@@ -274,7 +277,6 @@ namespace SnakeGameWPF.ViewModels
             _timer.Stop();
             //mainWindow.ApplyBlur();
             //window2.Owner = mainWindow;
-            MessageBox.Show("У вас не осталось жизней.\nКонец игры !!!", "КОНЕЦ ИГРЫ", MessageBoxButton.OKCancel);
             //dialogWindow.Label.Content = "У вас не осталось жизней.\nКонец игры !!!";
             //dialogWindow.Button.Content = "Заново";
             //dialogWindow.Show();

@@ -1,6 +1,6 @@
-﻿namespace SnakeGameWPF.Models
+﻿namespace SnakeGameWPF.Models.GameObjects
 {
-    enum Direction
+    internal enum Direction
     {
         Pause,
         Up,

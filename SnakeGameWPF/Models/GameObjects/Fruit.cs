@@ -1,6 +1,6 @@
-﻿namespace SnakeGameWPF.Models
+﻿namespace SnakeGameWPF.Models.GameObjects
 {
-    class Fruit : GameObject
+    internal class Fruit : GameObject
     {
     }
 }

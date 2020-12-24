@@ -17,7 +17,7 @@ namespace SnakeGameWPF.Views
     /// </summary>
     public partial class DialogWindow : Window
     {
-        readonly MainWindow _mainWindow;
+        private readonly MainWindow _mainWindow;
         public string DialogContent { get; set; }
         public DialogWindow(MainWindow mainWindow)
         {

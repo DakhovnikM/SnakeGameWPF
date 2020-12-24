@@ -2,7 +2,7 @@
 
 namespace SnakeGameWPF.Commands
 {
-    class RelayCommand : Command
+    internal class RelayCommand : Command
     {
         private readonly Action<object> _execute;
         private readonly Func<object, bool> _canExecute;

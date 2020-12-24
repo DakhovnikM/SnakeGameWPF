@@ -1,8 +1,8 @@
 ﻿using System.Windows.Media;
 
-namespace SnakeGameWPF.Models
+namespace SnakeGameWPF.Models.GameObjects
 {
-    abstract class GameObject
+    internal abstract class GameObject
     {
         public double ObjectCoordinateX { get; set; }
 

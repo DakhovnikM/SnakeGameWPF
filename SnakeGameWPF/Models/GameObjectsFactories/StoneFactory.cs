@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
+using SnakeGameWPF.Models.GameObjects;
 
-namespace SnakeGameWPF.Models
+namespace SnakeGameWPF.Models.GameObjectsFactories
 {
-    class StoneFactory : GameObjectFactory
+    internal class StoneFactory : GameObjectFactory
     {
         public StoneFactory(GameSettings gameSettings) : base(gameSettings)
         {
@@ -27,7 +28,7 @@ namespace SnakeGameWPF.Models
         {
             var stones = new List<GameObject>();
 
-            for (int i = 0; i < GameSettings.StartNomberOfStones; i++)
+            for (var i = 0; i < GameSettings.StartNomberOfStones; i++)
             {
                 GameObject stone = GetObject();
                 stones.Add(stone);
