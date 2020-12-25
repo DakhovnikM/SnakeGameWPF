@@ -30,7 +30,7 @@ namespace SnakeGameWPF.Views
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             dialogWindow.Owner = this;
-            Btn_Exit.IsEnabled = false;
+            //Btn_Exit.IsEnabled = false;
             ApplyBlur();
             dialogWindow.Show();
         }

@@ -16,8 +16,8 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
         {
             GameObject stone = new Stone()
             {
-                ObjectCoordinateX = (new Random().Next(1, 45)) * 15,
-                ObjectCoordinateY = (new Random().Next(1, 45)) * 15,
+                ObjectCoordinateX = (new Random().Next(1, 44)) * 20,
+                ObjectCoordinateY = (new Random().Next(1, 34)) * 20,
                 ObjectImage = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\stone.png")),
                 ObjectType = GameObjectType.Stone
             };

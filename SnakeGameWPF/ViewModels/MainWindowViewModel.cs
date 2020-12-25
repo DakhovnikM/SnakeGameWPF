@@ -40,7 +40,7 @@ namespace SnakeGameWPF.ViewModels
             {
                 _life = value;
                 if (_life == 0)
-                    MessageBox.Show("У вас не осталось жизней.\nКонец игры !!!", "КОНЕЦ ИГРЫ", MessageBoxButton.OKCancel);
+                    MessageBox.Show("У вас не осталось жизней !!!", "КОНЕЦ ИГРЫ", MessageBoxButton.OKCancel);
                 OnPropertyChanged("Life");
             }
         }
@@ -144,7 +144,11 @@ namespace SnakeGameWPF.ViewModels
         private void GameEngine(object sender, EventArgs e)
         {
             bool snakeBitItSelf = SnakeHeadPositionMatchBody();
-            if (snakeBitItSelf) GameOver();
+            if (snakeBitItSelf)
+            {
+                Life = 0;
+                GameOver();
+            }
 
             var canAddStone = false;
 
@@ -189,13 +193,13 @@ namespace SnakeGameWPF.ViewModels
                 case Direction.Up:
                     snakeElement.ObjectCoordinateY -= _gameSettings.ShiftStep;
                     snakeElement.ObjectCoordinateY = snakeElement.ObjectCoordinateY < 0
-                        ? _gameSettings.GameFieldWidth
+                        ? _gameSettings.GameFieldHeight
                         : snakeElement.ObjectCoordinateY;
                     break;
 
                 case Direction.Down:
                     snakeElement.ObjectCoordinateY += _gameSettings.ShiftStep;
-                    snakeElement.ObjectCoordinateY = snakeElement.ObjectCoordinateY > _gameSettings.GameFieldWidth
+                    snakeElement.ObjectCoordinateY = snakeElement.ObjectCoordinateY > _gameSettings.GameFieldHeight
                         ? 0
                         : snakeElement.ObjectCoordinateY;
                     break;

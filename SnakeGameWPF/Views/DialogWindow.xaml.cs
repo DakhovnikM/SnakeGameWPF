@@ -33,7 +33,7 @@ namespace SnakeGameWPF.Views
         {
             Hide();
             _mainWindow.ClearBlur();
-            _mainWindow.Btn_Exit.IsEnabled = true;
+            //_mainWindow.Btn_Exit.IsEnabled = true;
         }
 
     }

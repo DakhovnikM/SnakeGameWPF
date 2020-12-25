@@ -7,7 +7,7 @@
         xmlns:dc="clr-namespace:SnakeGameWPF.ViewModels"
         xmlns:ge="clr-namespace:SnakeGameWPF"
         mc:Ignorable="d"
-        Title="SNAKE" Height="736" Width="936" 
+        Title="SNAKE" Height="736" Width="906" 
         Loaded="MW_Loaded" 
         ResizeMode="NoResize" 
         WindowStartupLocation="CenterScreen"
@@ -38,108 +38,58 @@
         </Style>
     </Window.Resources>
 
-    <DockPanel>
-        <StatusBar DockPanel.Dock="Bottom" Height="30">
-            <StatusBarItem>
-                <TextBlock Text="{Binding Score, StringFormat=Счет:{0}}"/>
-            </StatusBarItem>
+    <Grid x:Name="Grid0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="700"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-            <StatusBarItem>
-                <TextBlock Text="{Binding Life, StringFormat=Жизни:{0}}"/>
-            </StatusBarItem>
-
-            <StatusBarItem>
-                <TextBlock Text="{Binding Level, StringFormat=Уровень:{0}}"/>
-            </StatusBarItem>
-        </StatusBar>
-
-        <Grid x:Name="Grid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="700"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <Canvas Name="canvas" 
+        <Canvas Name="canvas" 
                 Grid.Column="0" 
-                Background="Bisque" 
-                Height="700" Width="700"/>
+                Background="Bisque"
+                Height="700"
+                Width="900"/>
 
-            <ItemsControl ItemsSource="{Binding GameObjectsCollection}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="ContentPresenter">
-                        <Setter Property="Canvas.Left" Value="{Binding ObjectCoordinateX}"/>
-                        <Setter Property="Canvas.Top" Value="{Binding ObjectCoordinateY}"/>
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Image Source="{Binding ObjectImage}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+        <ItemsControl ItemsSource="{Binding GameObjectsCollection}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding ObjectCoordinateX}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding ObjectCoordinateY}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Image Source="{Binding ObjectImage}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-            <Grid x:Name="Grid0" 
-              Grid.Column="1" 
-              Background="BurlyWood">
+        <StackPanel Grid.Row="1">
+            <Grid  Background="BurlyWood">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="125"/>
+                    <ColumnDefinition Width="125"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition Height="5*"/>
-                    <RowDefinition Height="5*"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock x:Name="TextBlock" 
-                       Grid.Row="0" Grid.Column="1">
-                <Run Text=" Счет - "/>
-                <Run Text="{Binding Score}"/>
-                </TextBlock>
-
-                <TextBlock x:Name="TextBlock1" 
-                       Grid.Row="1" Grid.Column="1">
-                <Run Text=" Жизни - "/>
-                <Run Text="{Binding Life}"/>
-                </TextBlock>
-
-                <TextBlock x:Name="TextBlock2" 
-                       Grid.Row="2" Grid.Column="1">
-                <Run Text=" Уровень - "/>
-                <Run Text="{Binding Level}"/>
-                </TextBlock>
-
-                <TextBlock x:Name="TextBlock3" 
-                       Grid.Row="3" Grid.Column="1"/>
-                <TextBlock x:Name="TextBlock4" 
-                       Grid.Row="4" Grid.Column="1" />
-
-                <Button x:Name="Btn_Restart"  
-                        Grid.Row="4" Grid.Column="1" 
-                        Width="160" Height="50" 
-                        VerticalAlignment="Bottom" 
-                        Content="ЗАНОВО" 
-                        Background="LightGray" 
-                        FontSize="22" 
-                        Margin="0 0 0 15"/>
-
-                <Button x:Name="Btn_Exit"  
-                        Grid.Row="5" Grid.Column="1" 
-                        Width="160" Height="50" 
-                        VerticalAlignment="Bottom" 
+                <TextBlock Grid.Column="0" Text="{Binding Score, StringFormat=Score : {0}}"/>
+                <TextBlock Grid.Column="1" Text="{Binding Life, StringFormat=Life : {0}}"/>
+                <TextBlock Grid.Column="2" Text="{Binding Level, StringFormat=Level : {0}}"/>
+                
+                <Button Grid.Column="4" 
+                        Width="120" Height="30" 
                         Content="EXIT" 
                         Command="{Binding BtnExitCommand}"
-                        Background="LightGray" 
-                        FontSize="22" 
-                        Margin="0 0 0 15"/>
+                        Background="LightYellow"
+                        Foreground="Brown"
+                        FontSize="20"/>
             </Grid>
-        </Grid>
-    </DockPanel>
+        </StackPanel>
+    </Grid>
 </Window>

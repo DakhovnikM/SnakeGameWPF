@@ -2,7 +2,7 @@
 {
     internal class GameSettings
     {
-        public int GameFieldWidth { get; } = 680;
+        public int GameFieldWidth { get; } = 880;
 
         public int GameFieldHeight { get; } = 680;
 
