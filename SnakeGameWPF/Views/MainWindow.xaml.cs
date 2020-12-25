@@ -22,9 +22,9 @@ namespace SnakeGameWPF.Views
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
-            dialogWindow = new DialogWindow(this);
+            //dialogWindow = new DialogWindow(this);
 
-            this.Loaded += Window_Loaded;
+            //this.Loaded += Window_Loaded;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

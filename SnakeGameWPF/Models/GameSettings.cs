@@ -6,7 +6,7 @@
 
         public int GameFieldHeight { get; } = 680;
 
-        public int StartNomberOfFruits { get; set; } = 5;
+        public int StartNomberOfFruits { get; set; } = 4;
 
         public int StartNomberOfStones { get; set; } = 20;
 

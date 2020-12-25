@@ -254,7 +254,7 @@ namespace SnakeGameWPF.ViewModels
         {
             return gameObjects
                 .Where(item => Math.Abs(_scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep * 2)
-                .First(item => Math.Abs(_scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep * 2);
+                .FirstOrDefault(item => Math.Abs(_scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep * 2);
         }
 
         /// <summary>

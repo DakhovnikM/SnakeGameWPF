@@ -30,9 +30,11 @@
     </Window.InputBindings>
 
     <Window.Resources>
+        <FontFamily x:Key="Retrofont">pack://application:,,,/Fonts/#Retro Gaming</FontFamily>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="24"/>
             <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontFamily" Value="{StaticResource Retrofont}"/>
             <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
@@ -88,6 +90,7 @@
                         Command="{Binding BtnExitCommand}"
                         Background="LightYellow"
                         Foreground="Brown"
+                        FontFamily="{StaticResource Retrofont}"
                         FontSize="20"/>
             </Grid>
         </StackPanel>
