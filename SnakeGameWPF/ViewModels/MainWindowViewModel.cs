@@ -99,6 +99,7 @@ namespace SnakeGameWPF.ViewModels
             if (_timer.IsEnabled) _timer.Stop();
             else _timer.Start();
         }
+
         public ICommand BtnExitCommand { get; set; }
         private bool CanExecuteBtnExitCommand(object p) => true;
         private void OnExecutedBtnExitCommand(object p)
@@ -188,6 +189,7 @@ namespace SnakeGameWPF.ViewModels
             var snakeElement = _scene.Snake[0];
             var subPositionX = snakeElement.ObjectCoordinateX;
             var subPositionY = snakeElement.ObjectCoordinateY;
+
             switch (_direction)
             {
                 case Direction.Up:
@@ -218,8 +220,8 @@ namespace SnakeGameWPF.ViewModels
                         : snakeElement.ObjectCoordinateX;
                     break;
 
-                case Direction.Pause:
-                    return;
+                default:
+                    throw new ArgumentException(nameof(_direction));
             }
 
             for (var i = _scene.Snake.Count - 1; i > 1; i--)
@@ -252,7 +254,7 @@ namespace SnakeGameWPF.ViewModels
         {
             return gameObjects
                 .Where(item => Math.Abs(_scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep * 2)
-                .FirstOrDefault(item => Math.Abs(_scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep * 2);
+                .First(item => Math.Abs(_scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep * 2);
         }
 
         /// <summary>

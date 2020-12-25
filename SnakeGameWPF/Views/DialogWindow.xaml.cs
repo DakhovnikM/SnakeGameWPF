@@ -25,8 +25,8 @@ namespace SnakeGameWPF.Views
             _mainWindow = mainWindow;
 
             DialogContent = "Старт/Стоп - клавиша Пробел.\nДвижение стрелками.";
-            Label.Content = DialogContent;
-            Button.Content = "OK";
+            //Label.Content = DialogContent;
+            //Button.Content = "OK";
         }
 
         public void Button_Click(object sender, RoutedEventArgs e)
