@@ -20,7 +20,7 @@
     <Window.DataContext>
         <dc:MainWindowViewModel/>
     </Window.DataContext>
-    
+
     <Window.InputBindings>
         <KeyBinding Key="Up" Command="{Binding KeyUpCommand}"/>
         <KeyBinding Key="Down" Command="{Binding KeyDownCommand}"/>
@@ -28,7 +28,7 @@
         <KeyBinding Key="Right" Command="{Binding KeyRightCommand}"/>
         <KeyBinding Key="Space" Command="{Binding KeySpaceCommand}"/>
     </Window.InputBindings>
-    
+
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="24"/>
@@ -122,22 +122,23 @@
                        Grid.Row="4" Grid.Column="1" />
 
                 <Button x:Name="Btn_Restart"  
-                    Grid.Row="4" Grid.Column="1" 
-                    Width="160" Height="50" 
-                    VerticalAlignment="Bottom" 
-                    Content="ЗАНОВО" 
-                    Background="LightGray" 
-                    FontSize="22" 
-                    Margin="0 0 0 15"/>
+                        Grid.Row="4" Grid.Column="1" 
+                        Width="160" Height="50" 
+                        VerticalAlignment="Bottom" 
+                        Content="ЗАНОВО" 
+                        Background="LightGray" 
+                        FontSize="22" 
+                        Margin="0 0 0 15"/>
 
                 <Button x:Name="Btn_Exit"  
-                    Grid.Row="5" Grid.Column="1" 
-                    Width="160" Height="50" 
-                    VerticalAlignment="Bottom" 
-                    Content="ВЫХОД" 
-                    Background="LightGray" 
-                    FontSize="22" 
-                    Margin="0 0 0 15"/>
+                        Grid.Row="5" Grid.Column="1" 
+                        Width="160" Height="50" 
+                        VerticalAlignment="Bottom" 
+                        Content="EXIT" 
+                        Command="{Binding BtnExitCommand}"
+                        Background="LightGray" 
+                        FontSize="22" 
+                        Margin="0 0 0 15"/>
             </Grid>
         </Grid>
     </DockPanel>

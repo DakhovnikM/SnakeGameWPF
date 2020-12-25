@@ -33,15 +33,14 @@ namespace SnakeGameWPF.Models
             return _scene ??= new Scene(gameSettings);
         }
 
-        public GameObject AddNewSnakeBodyElement()
+        public void AddNewSnakeBodyElement()
         {
             var snakeFactory = new SnakeFactory(_gameSettings);
             var snakeElement = snakeFactory.GetObject();
-            //Snake.Add(snakeElement);
-            return snakeElement;
+            Snake.Add(snakeElement);
         }
 
-        public GameObject AddNewFruitToFruits() //TODO Реализовать универсальный метод
+        public void AddNewFruitToFruits() //TODO Реализовать универсальный метод
         {
             do
             {
@@ -49,11 +48,10 @@ namespace SnakeGameWPF.Models
                 _newObject = fruitFactory.GetObject();
 
             } while (ObjectsPositionsMatched(_newObject, Fruits));
-            //Fruits.Add(_newObject);
-            return _newObject;
+            Fruits.Add(_newObject);
         }
 
-        public GameObject AddNewStoneToStones()
+        public void AddNewStoneToStones()
         {
             do
             {
@@ -61,8 +59,7 @@ namespace SnakeGameWPF.Models
                 _newObject = stoneFactory.GetObject();
 
             } while (ObjectsPositionsMatched(_newObject, Stones));
-            //Stones.Add(_newObject);
-            return _newObject;
+            Stones.Add(_newObject);
         }
 
         private bool ObjectsPositionsMatched(GameObject gameObject, IList<GameObject> gameObjects)

@@ -99,6 +99,12 @@ namespace SnakeGameWPF.ViewModels
             if (_timer.IsEnabled) _timer.Stop();
             else _timer.Start();
         }
+        public ICommand BtnExitCommand { get; set; }
+        private bool CanExecuteBtnExitCommand(object p) => true;
+        private void OnExecutedBtnExitCommand(object p)
+        {
+            Application.Current.Shutdown();
+        }
         #endregion
 
         #region CTOR
@@ -125,6 +131,7 @@ namespace SnakeGameWPF.ViewModels
             KeyRightCommand = new RelayCommand(OnExecutedKeyRightCommand, CanExecuteKeyRightCommand);
             KeyLeftCommand = new RelayCommand(OnExecutedKeyLeftCommand, CanExecuteKeyLeftCommand);
             KeySpaceCommand = new RelayCommand(OnExecutedKeySpaceCommand, CanExecuteKeySpaceCommand);
+            BtnExitCommand = new RelayCommand(OnExecutedBtnExitCommand, CanExecuteBtnExitCommand);
             #endregion
         }
         #endregion
@@ -137,7 +144,7 @@ namespace SnakeGameWPF.ViewModels
         private void GameEngine(object sender, EventArgs e)
         {
             bool snakeBitItSelf = SnakeHeadPositionMatchBody();
-            if (snakeBitItSelf) Life--;
+            if (snakeBitItSelf) GameOver();
 
             var canAddStone = false;
 
@@ -150,7 +157,6 @@ namespace SnakeGameWPF.ViewModels
 
                 Score++;
                 canAddStone = true;
-
                 IncreaseSpeed();
             }
 
