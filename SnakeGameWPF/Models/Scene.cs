@@ -13,6 +13,7 @@ namespace SnakeGameWPF.Models
         private GameObject _newObject;
 
         private static Scene _scene;
+
         public IList<GameObject> Fruits { get; }
 
         public IList<GameObject> Stones { get; }

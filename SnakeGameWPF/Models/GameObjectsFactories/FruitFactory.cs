@@ -18,7 +18,7 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
             {
                 ObjectCoordinateX = (new Random().Next(1, 44)) * 20,
                 ObjectCoordinateY = (new Random().Next(1, 34)) * 20,
-                ObjectImage = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\apple.png")),
+                ObjectImage = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\fruit20x20.png")),
                 ObjectType = GameObjectType.Fruit
             };
             return fruit;

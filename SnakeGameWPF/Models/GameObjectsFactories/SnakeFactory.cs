@@ -18,7 +18,7 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
             {
                 ObjectCoordinateX = GameSettings.SnakeStartPositionX,
                 ObjectCoordinateY = GameSettings.SnakeStartPositionY,
-                ObjectImage = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\snakeBody.png")),
+                ObjectImage = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\snakeEll20x20.png")),
                 ObjectType = GameObjectType.Snake
             };
             return snakeElement;

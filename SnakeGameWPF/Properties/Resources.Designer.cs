@@ -63,9 +63,9 @@ namespace SnakeGameWPF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] apple {
+        internal static byte[] fruit20x20 {
             get {
-                object obj = ResourceManager.GetObject("apple", resourceCulture);
+                object obj = ResourceManager.GetObject("fruit20x20", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace SnakeGameWPF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] snakeBody {
+        internal static byte[] snakeEll20x20 {
             get {
-                object obj = ResourceManager.GetObject("snakeBody", resourceCulture);
+                object obj = ResourceManager.GetObject("snakeEll20x20", resourceCulture);
                 return ((byte[])(obj));
             }
         }
