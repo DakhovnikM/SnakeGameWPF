@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using SnakeGameWPF.Models.GameObjects;
 using SnakeGameWPF.Models.GameObjectsFactories;
 
@@ -8,7 +9,6 @@ namespace SnakeGameWPF.Models
 {
     internal class Scene
     {
-        private readonly GameSettings _gameSettings;
         private GameObject _newObject;
         private readonly FruitFactory _fruit;
         private readonly StoneFactory _stone;
@@ -20,11 +20,9 @@ namespace SnakeGameWPF.Models
 
         public Scene(GameSettings gameSettings)
         {
-            _gameSettings = gameSettings;
-
-            _fruit = new FruitFactory(_gameSettings);
-            _stone = new StoneFactory(_gameSettings);
-            _snake = new SnakeFactory(_gameSettings);
+            _fruit = new FruitFactory(gameSettings);
+            _stone = new StoneFactory(gameSettings);
+            _snake = new SnakeFactory(gameSettings);
 
             Fruits = _fruit.GetFruits();
             Stones = _stone.GetStones();
@@ -56,8 +54,8 @@ namespace SnakeGameWPF.Models
         private bool ObjectPositionsMatch(GameObject gameObject, IList<GameObject> gameObjects)
         {
             return gameObjects
-                .Where(item => gameObject.ObjectCoordinateX == item.ObjectCoordinateX)
-                .Any(item => gameObject.ObjectCoordinateY == item.ObjectCoordinateY);
+                .Where(item => Math.Abs(gameObject.ObjectCoordinateX - item.ObjectCoordinateX) == 0)
+                .Any(item => Math.Abs(gameObject.ObjectCoordinateY - item.ObjectCoordinateY) == 0);
         }
     }
 }

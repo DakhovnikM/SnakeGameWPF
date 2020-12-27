@@ -6,11 +6,11 @@
 
         public int GameFieldHeight { get; } = 680;
 
-        public int StartNomberOfFruits { get; set; } = 4;
+        public int StartNomberOfFruits { get;} = 4;
 
-        public int StartNomberOfStones { get; set; } = 20;
+        public int StartNomberOfStones { get;} = 20;
 
-        public int StartNomberOfSnakeElements { get; set; } = 5;
+        public int StartNomberOfSnakeElements { get;} = 5;
 
         public double SnakeStartPositionX { get; } = 250;
 
@@ -18,12 +18,12 @@
 
         public int ShiftStep { get; } = 5;
 
-        public int SnakeSpeed { get; set; } = 70;
+        public int SnakeSpeed { get;} = 70;
 
-        public int Level { get; set; } = 1;
+        public int Level { get;} = 1;
 
-        public int SnakeLife { get; set; } = 3;
+        public int SnakeLife { get;} = 3;
 
-        public int Score { get; set; }
+        public int Score { get; } = 0;
     }
 }
