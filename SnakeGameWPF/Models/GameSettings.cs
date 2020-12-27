@@ -10,7 +10,7 @@
 
         public int StartNomberOfStones { get; set; } = 20;
 
-        public int StartNomberOfSnakeElements { get; set; } = 8;
+        public int StartNomberOfSnakeElements { get; set; } = 5;
 
         public double SnakeStartPositionX { get; } = 250;
 
@@ -18,7 +18,7 @@
 
         public int ShiftStep { get; } = 5;
 
-        public int SnakeSpeed { get; set; } = 100;
+        public int SnakeSpeed { get; set; } = 70;
 
         public int Level { get; set; } = 1;
 

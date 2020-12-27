@@ -19,6 +19,7 @@ namespace SnakeGameWPF.ViewModels
         private readonly Scene _scene;
         private readonly GameSettings _gameSettings;
         private readonly DispatcherTimer _timer;
+        private int _speed;
 
         #region Свойства
         private int _score;
@@ -61,34 +62,30 @@ namespace SnakeGameWPF.ViewModels
 
         #region Команды
         public ICommand KeyUpCommand { get; set; }
-        private bool CanExecuteKeyUpCommand(object p) => true;
+        private bool CanExecuteKeyUpCommand(object p) => _direction != Direction.Down;
         private void OnExecutedKeyUpCommand(object p)
         {
-            if (_direction == Direction.Down) return;
             _direction = Direction.Up;
         }
 
         public ICommand KeyDownCommand { get; set; }
-        private bool CanExecuteKeyDownCommand(object p) => true;
+        private bool CanExecuteKeyDownCommand(object p) => _direction != Direction.Up;
         private void OnExecutedKeyDownCommand(object p)
         {
-            if (_direction == Direction.Up) return;
             _direction = Direction.Down;
         }
 
         public ICommand KeyRightCommand { get; set; }
-        private bool CanExecuteKeyRightCommand(object p) => true;
+        private bool CanExecuteKeyRightCommand(object p) => _direction != Direction.Left;
         private void OnExecutedKeyRightCommand(object p)
         {
-            if (_direction == Direction.Left) return;
             _direction = Direction.Right;
         }
 
         public ICommand KeyLeftCommand { get; set; }
-        private bool CanExecuteKeyLeftCommand(object p) => true;
+        private bool CanExecuteKeyLeftCommand(object p) => _direction != Direction.Right;
         private void OnExecutedKeyLeftCommand(object p)
         {
-            if (_direction == Direction.Right) return;
             _direction = Direction.Left;
         }
 
@@ -112,13 +109,12 @@ namespace SnakeGameWPF.ViewModels
         public MainWindowViewModel()
         {
             _gameSettings = new GameSettings();
-            _scene = Scene.GetScene(_gameSettings);
-
+            _scene = new Scene(_gameSettings);
+            _direction = Direction.Up;
             _timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, _gameSettings.SnakeSpeed) };
             _timer.Tick += GameEngine;
 
-            _direction = Direction.Up;
-
+            _speed = _gameSettings.SnakeSpeed;
             Score = _gameSettings.Score;
             Life = _gameSettings.SnakeLife;
             Level = _gameSettings.Level;
@@ -186,10 +182,12 @@ namespace SnakeGameWPF.ViewModels
         /// </summary>
         private void MoveSnake()
         {
+            //Сохраняем координаты головы змеи во временных переменных
             var snakeElement = _scene.Snake[0];
-            var subPositionX = snakeElement.ObjectCoordinateX;
-            var subPositionY = snakeElement.ObjectCoordinateY;
+            var tmpPositionX = snakeElement.ObjectCoordinateX;
+            var tmpPositionY = snakeElement.ObjectCoordinateY;
 
+            //В зависимости от направления изменяем координаты головы змеи на шаг сдвига
             switch (_direction)
             {
                 case Direction.Up:
@@ -224,14 +222,16 @@ namespace SnakeGameWPF.ViewModels
                     throw new ArgumentException(nameof(_direction));
             }
 
+            //Проходим по телу змеи (начия с 3го элемента), перекидывая координаты текущего элемента на следующий.
             for (var i = _scene.Snake.Count - 1; i > 1; i--)
             {
                 _scene.Snake[i].ObjectCoordinateX = _scene.Snake[i - 1].ObjectCoordinateX;
                 _scene.Snake[i].ObjectCoordinateY = _scene.Snake[i - 1].ObjectCoordinateY;
             }
 
-            _scene.Snake[1].ObjectCoordinateX = subPositionX;
-            _scene.Snake[1].ObjectCoordinateY = subPositionY;
+            //Пробрасываем временно сохраненные координаты головы во второй элемент.
+            _scene.Snake[1].ObjectCoordinateX = tmpPositionX;
+            _scene.Snake[1].ObjectCoordinateY = tmpPositionY;
         }
 
         /// <summary>
@@ -279,11 +279,11 @@ namespace SnakeGameWPF.ViewModels
         private void IncreaseSpeed()
         {
             if (Score % 3 != 0) return;
-            if (_gameSettings.SnakeSpeed <= 10) return;
+            if (_speed <= 5) return;
 
-            _gameSettings.SnakeSpeed -= 2;
+            _speed -= 2;
             Level++;
-            _timer.Interval = new TimeSpan(0, 0, 0, 0, _gameSettings.SnakeSpeed);
+            _timer.Interval = new TimeSpan(0, 0, 0, 0, _speed);
         }
 
         private void GameOver()

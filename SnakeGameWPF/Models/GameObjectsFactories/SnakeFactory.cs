@@ -31,7 +31,7 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
             for (var i = 0; i < GameSettings.StartNomberOfSnakeElements; i++)
             {
                 GameObject snakeElement = GetObject();
-                snakeElement.ObjectCoordinateY += i * 5;
+                snakeElement.ObjectCoordinateY += i * GameSettings.ShiftStep;
                 snake.Add(snakeElement);
             }
             return snake;
