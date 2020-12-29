@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media.Imaging;
 using SnakeGameWPF.Models.GameObjects;
 
@@ -26,13 +27,11 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
 
         public IList<GameObject> GetFruits()
         {
-            var fruits = new List<GameObject>();
+            var fruits = Enumerable
+                .Range(1, GameSettings.StartNomberOfFruits)
+                .Select(c => GetObject())
+                .ToList();
 
-            for (var i = 0; i < GameSettings.StartNomberOfFruits; i++)
-            {
-                GameObject fruit = GetObject();
-                fruits.Add(fruit);
-            }
             return fruits;
         }
     }

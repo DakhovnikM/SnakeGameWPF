@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media.Imaging;
 using SnakeGameWPF.Models.GameObjects;
 
@@ -26,13 +27,11 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
 
         public IList<GameObject> GetStones()
         {
-            var stones = new List<GameObject>();
-
-            for (var i = 0; i < GameSettings.StartNomberOfStones; i++)
-            {
-                GameObject stone = GetObject();
-                stones.Add(stone);
-            }
+            var stones = Enumerable
+                .Range(1, GameSettings.StartNomberOfStones)
+                .Select(c => GetObject())
+                .ToList();
+            
             return stones;
         }
     }

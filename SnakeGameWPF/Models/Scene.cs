@@ -37,18 +37,24 @@ namespace SnakeGameWPF.Models
 
         public void AddNewFruitToFruits() //TODO Реализовать универсальный метод
         {
-            do _newObject = _fruit.GetObject();
-            while (ObjectPositionsMatch(_newObject, Fruits));
-
-            Fruits.Add(_newObject);
+            while (true)
+            {
+                _newObject = _fruit.GetObject();
+                if (ObjectPositionsMatch(_newObject, Fruits)) continue;
+                Fruits.Add(_newObject);
+                break;
+            }
         }
 
         public void AddNewStoneToStones()
         {
-            do _newObject = _stone.GetObject();
-            while (ObjectPositionsMatch(_newObject, Stones));
-
-            Stones.Add(_newObject);
+            while (true)
+            {
+                _newObject = _stone.GetObject();
+                if (ObjectPositionsMatch(_newObject, Stones)) continue;
+                Stones.Add(_newObject);
+                break;
+            }
         }
 
         private bool ObjectPositionsMatch(GameObject gameObject, IList<GameObject> gameObjects)

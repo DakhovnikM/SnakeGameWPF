@@ -15,11 +15,13 @@ namespace SnakeGameWPF.ViewModels
 {
     internal class MainWindowViewModel : BaseViewModel
     {
+        #region Поля
         private Direction _direction;
         private readonly Scene _scene;
         private readonly GameSettings _gameSettings;
         private readonly DispatcherTimer _timer;
         private int _speed;
+        #endregion
 
         #region Свойства
         private int _score;
