@@ -40,7 +40,7 @@ namespace SnakeGameWPF.Models
             while (true)
             {
                 _newObject = _fruit.GetObject();
-                if (ObjectPositionsMatch(_newObject, Fruits)) continue;
+                if (ObjectPositionsMatch(_newObject, Fruits) && ObjectPositionsMatch(_newObject, Stones)) continue;
                 Fruits.Add(_newObject);
                 break;
             }
@@ -51,7 +51,7 @@ namespace SnakeGameWPF.Models
             while (true)
             {
                 _newObject = _stone.GetObject();
-                if (ObjectPositionsMatch(_newObject, Stones)) continue;
+                if (ObjectPositionsMatch(_newObject, Stones) && ObjectPositionsMatch(_newObject, Fruits)) continue;
                 Stones.Add(_newObject);
                 break;
             }

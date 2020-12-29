@@ -151,7 +151,8 @@ namespace SnakeGameWPF.ViewModels
 
             var canAddStone = false;
 
-            GameObject objToRemove = GetObjectToRemove(_scene.Fruits);
+            GameObject objToRemove = GetObjectToRemove(GameObjectsCollection);
+
             if (objToRemove is Fruit fruit)
             {
                 _scene.Fruits.Remove(fruit);
@@ -162,8 +163,7 @@ namespace SnakeGameWPF.ViewModels
                 canAddStone = true;
                 IncreaseSpeed();
             }
-
-            objToRemove = GetObjectToRemove(_scene.Stones);
+            else
             if (objToRemove is Stone stone)
             {
                 _scene.Stones.Remove(stone);
@@ -171,8 +171,7 @@ namespace SnakeGameWPF.ViewModels
                 if (Life == 0) GameOver();
             }
 
-            if (Score % 2 == 0 && canAddStone)
-                _scene.AddNewStoneToStones();
+            if (Score % 2 == 0 && canAddStone) _scene.AddNewStoneToStones();
 
             MoveSnake();
             GameObjectsCollection.Clear();
@@ -235,7 +234,7 @@ namespace SnakeGameWPF.ViewModels
             _scene.Snake[1].ObjectCoordinateX = tmpPositionX;
             _scene.Snake[1].ObjectCoordinateY = tmpPositionY;
         }
-
+         
         /// <summary>
         /// Объединяет все игровые элементы в одну коллекцию.
         /// </summary>
@@ -252,7 +251,7 @@ namespace SnakeGameWPF.ViewModels
         /// </summary>
         /// <param name="gameObjects"></param>
         /// <returns></returns>
-        private GameObject GetObjectToRemove(IEnumerable<GameObject> gameObjects)
+        private GameObject GetObjectToRemove(ObservableCollection<GameObject> gameObjects)
         {
             return gameObjects
                 .Where(item => Math.Abs(_scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep * 2)
