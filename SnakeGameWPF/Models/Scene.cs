@@ -29,39 +29,39 @@ namespace SnakeGameWPF.Models
             Snake = _snake.GetSnake();
         }
 
-        public void AddNewSnakeBodyElement()
+        public void AddNewSnakeElement()
         {
             var snakeElement = _snake.GetObject();
             Snake.Add(snakeElement);
         }
 
-        public void AddNewFruitToFruits() //TODO Реализовать универсальный метод
+        public void AddNewFruit() //TODO Реализовать универсальный метод
         {
             while (true)
             {
                 _newObject = _fruit.GetObject();
-                if (ObjectPositionsMatch(_newObject, Fruits) && ObjectPositionsMatch(_newObject, Stones)) continue;
+                if (ObjectsMatch(_newObject, Fruits) || ObjectsMatch(_newObject, Stones)) continue;
                 Fruits.Add(_newObject);
                 break;
             }
         }
 
-        public void AddNewStoneToStones()
+        public void AddNewStone()
         {
             while (true)
             {
                 _newObject = _stone.GetObject();
-                if (ObjectPositionsMatch(_newObject, Stones) && ObjectPositionsMatch(_newObject, Fruits)) continue;
+                if (ObjectsMatch(_newObject, Stones) || ObjectsMatch(_newObject, Fruits)) continue;
                 Stones.Add(_newObject);
                 break;
             }
         }
 
-        private bool ObjectPositionsMatch(GameObject gameObject, IList<GameObject> gameObjects)
+        private bool ObjectsMatch(GameObject gameObject, IList<GameObject> gameObjects)
         {
             return gameObjects
-                .Where(item => Math.Abs(gameObject.ObjectCoordinateX - item.ObjectCoordinateX) == 0)
-                .Any(item => Math.Abs(gameObject.ObjectCoordinateY - item.ObjectCoordinateY) == 0);
+                .Where(item => Math.Abs(gameObject.CoordX - item.CoordX) == 0)
+                .Any(item => Math.Abs(gameObject.CoordY - item.CoordY) == 0);
         }
     }
 }

@@ -4,12 +4,12 @@ namespace SnakeGameWPF.Models.GameObjects
 {
     internal abstract class GameObject
     {
-        public double ObjectCoordinateX { get; set; }
+        public double CoordX { get; set; }
 
-        public double ObjectCoordinateY { get; set; }
+        public double CoordY { get; set; }
 
-        public ImageSource ObjectImage { get; set; }
+        public ImageSource Image { get; set; }
 
-        public GameObjectType ObjectType { get; set; }
+        public GameObjectType Type { get; set; }
     }
 }

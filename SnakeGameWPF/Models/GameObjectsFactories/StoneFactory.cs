@@ -17,10 +17,10 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
         {
             GameObject stone = new Stone()
             {
-                ObjectCoordinateX = (new Random().Next(1, 44)) * 20,
-                ObjectCoordinateY = (new Random().Next(1, 34)) * 20,
-                ObjectImage = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\stone.png")),
-                ObjectType = GameObjectType.Stone
+                CoordX = (new Random().Next(1, 44)) * 20,
+                CoordY = (new Random().Next(1, 34)) * 20,
+                Image = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\stone.png")),
+                Type = GameObjectType.Stone
             };
             return stone;
         }
@@ -28,7 +28,7 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
         public IList<GameObject> GetStones()
         {
             var stones = Enumerable
-                .Range(1, GameSettings.StartNomberOfStones)
+                .Range(1, Settings.StartNomberOfStones)
                 .Select(c => GetObject())
                 .ToList();
             

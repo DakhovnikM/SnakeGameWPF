@@ -18,7 +18,7 @@ namespace SnakeGameWPF.ViewModels
         #region Поля
         private Direction _direction;
         private Scene _scene;
-        private readonly GameSettings _gameSettings;
+        private readonly GameSettings _settings;
         private readonly DispatcherTimer _timer;
         private int _speed;
         #endregion
@@ -59,7 +59,7 @@ namespace SnakeGameWPF.ViewModels
             }
         }
 
-        public ObservableCollection<GameObject> GameObjectsCollection { get; private set; }
+        public ObservableCollection<GameObject> GameObjectCollection { get; private set; }
         #endregion
 
         #region Команды
@@ -110,18 +110,18 @@ namespace SnakeGameWPF.ViewModels
         #region CTOR
         public MainWindowViewModel()
         {
-            _gameSettings = new GameSettings();
-            _scene = new Scene(_gameSettings);
+            _settings = new GameSettings();
+            _scene = new Scene(_settings);
             _direction = Direction.Up;
-            _timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, _gameSettings.SnakeSpeed) };
+            _timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, _settings.SnakeSpeed) };
             _timer.Tick += GameEngine;
 
-            _speed = _gameSettings.SnakeSpeed;
-            Score = _gameSettings.Score;
-            Life = _gameSettings.SnakeLife;
-            Level = _gameSettings.Level;
+            _speed = _settings.SnakeSpeed;
+            Score = _settings.Score;
+            Life = _settings.SnakeLife;
+            Level = _settings.Level;
 
-            GameObjectsCollection = new ObservableCollection<GameObject>();
+            GameObjectCollection = new ObservableCollection<GameObject>();
             GetGameObjectsCollection();
 
             #region Создание команд
@@ -151,17 +151,17 @@ namespace SnakeGameWPF.ViewModels
 
             var canAddStone = false;
 
-            GameObject objToRemove = GetObjectToRemove(GameObjectsCollection);
+            GameObject objToRemove = GetObjectToRemove(GameObjectCollection);
 
             if (objToRemove is Fruit fruit)
             {
                 _scene.Fruits.Remove(fruit);
-                _scene.AddNewFruitToFruits();
-                _scene.AddNewSnakeBodyElement();
+                _scene.AddNewFruit();
+                _scene.AddNewSnakeElement();
 
                 Score++;
                 canAddStone = true;
-                IncreaseSpeed();
+                SpeedUp();
             }
             else
             if (objToRemove is Stone stone)
@@ -171,10 +171,10 @@ namespace SnakeGameWPF.ViewModels
                 if (Life == 0) GameOver();
             }
 
-            if (Score % 2 == 0 && canAddStone) _scene.AddNewStoneToStones();
+            if (Score % 2 == 0 && canAddStone) _scene.AddNewStone();
 
             MoveSnake();
-            GameObjectsCollection.Clear();
+            GameObjectCollection.Clear();
             GetGameObjectsCollection();
         }
 
@@ -185,38 +185,38 @@ namespace SnakeGameWPF.ViewModels
         {
             //Сохраняем координаты головы змеи во временных переменных
             var snakeElement = _scene.Snake[0];
-            var tmpPositionX = snakeElement.ObjectCoordinateX;
-            var tmpPositionY = snakeElement.ObjectCoordinateY;
+            var tmpPositionX = snakeElement.CoordX;
+            var tmpPositionY = snakeElement.CoordY;
 
             //В зависимости от направления изменяем координаты головы змеи на шаг сдвига
             switch (_direction)
             {
                 case Direction.Up:
-                    snakeElement.ObjectCoordinateY -= _gameSettings.ShiftStep;
-                    snakeElement.ObjectCoordinateY = snakeElement.ObjectCoordinateY < 0
-                        ? _gameSettings.GameFieldHeight
-                        : snakeElement.ObjectCoordinateY;
+                    snakeElement.CoordY -= _settings.ShiftStep;
+                    snakeElement.CoordY = snakeElement.CoordY < 0
+                        ? _settings.GameFieldHeight
+                        : snakeElement.CoordY;
                     break;
 
                 case Direction.Down:
-                    snakeElement.ObjectCoordinateY += _gameSettings.ShiftStep;
-                    snakeElement.ObjectCoordinateY = snakeElement.ObjectCoordinateY > _gameSettings.GameFieldHeight
+                    snakeElement.CoordY += _settings.ShiftStep;
+                    snakeElement.CoordY = snakeElement.CoordY > _settings.GameFieldHeight
                         ? 0
-                        : snakeElement.ObjectCoordinateY;
+                        : snakeElement.CoordY;
                     break;
 
                 case Direction.Right:
-                    snakeElement.ObjectCoordinateX += _gameSettings.ShiftStep;
-                    snakeElement.ObjectCoordinateX = snakeElement.ObjectCoordinateX > _gameSettings.GameFieldWidth
+                    snakeElement.CoordX += _settings.ShiftStep;
+                    snakeElement.CoordX = snakeElement.CoordX > _settings.GameFieldWidth
                         ? 0
-                        : snakeElement.ObjectCoordinateX;
+                        : snakeElement.CoordX;
                     break;
 
                 case Direction.Left:
-                    snakeElement.ObjectCoordinateX -= _gameSettings.ShiftStep;
-                    snakeElement.ObjectCoordinateX = snakeElement.ObjectCoordinateX < 0
-                        ? _gameSettings.GameFieldWidth
-                        : snakeElement.ObjectCoordinateX;
+                    snakeElement.CoordX -= _settings.ShiftStep;
+                    snakeElement.CoordX = snakeElement.CoordX < 0
+                        ? _settings.GameFieldWidth
+                        : snakeElement.CoordX;
                     break;
 
                 default:
@@ -226,13 +226,13 @@ namespace SnakeGameWPF.ViewModels
             //Проходим по телу змеи (начия с 3го элемента), перекидывая координаты текущего элемента на следующий.
             for (var i = _scene.Snake.Count - 1; i > 1; i--)
             {
-                _scene.Snake[i].ObjectCoordinateX = _scene.Snake[i - 1].ObjectCoordinateX;
-                _scene.Snake[i].ObjectCoordinateY = _scene.Snake[i - 1].ObjectCoordinateY;
+                _scene.Snake[i].CoordX = _scene.Snake[i - 1].CoordX;
+                _scene.Snake[i].CoordY = _scene.Snake[i - 1].CoordY;
             }
 
             //Пробрасываем временно сохраненные координаты головы во второй элемент.
-            _scene.Snake[1].ObjectCoordinateX = tmpPositionX;
-            _scene.Snake[1].ObjectCoordinateY = tmpPositionY;
+            _scene.Snake[1].CoordX = tmpPositionX;
+            _scene.Snake[1].CoordY = tmpPositionY;
         }
          
         /// <summary>
@@ -240,9 +240,9 @@ namespace SnakeGameWPF.ViewModels
         /// </summary>
         private void GetGameObjectsCollection()
         {
-            foreach (var fruit in _scene.Fruits) GameObjectsCollection.Add(fruit);
-            foreach (var stone in _scene.Stones) GameObjectsCollection.Add(stone);
-            foreach (var snake in _scene.Snake) GameObjectsCollection.Add(snake);
+            foreach (var fruit in _scene.Fruits) GameObjectCollection.Add(fruit);
+            foreach (var stone in _scene.Stones) GameObjectCollection.Add(stone);
+            foreach (var snake in _scene.Snake) GameObjectCollection.Add(snake);
         }
 
         /// <summary>
@@ -254,8 +254,8 @@ namespace SnakeGameWPF.ViewModels
         private GameObject GetObjectToRemove(ObservableCollection<GameObject> gameObjects)
         {
             return gameObjects
-                .Where(item => Math.Abs(_scene.Snake[0].ObjectCoordinateX - item.ObjectCoordinateX) <= _gameSettings.ShiftStep * 2)
-                .FirstOrDefault(item => Math.Abs(_scene.Snake[0].ObjectCoordinateY - item.ObjectCoordinateY) <= _gameSettings.ShiftStep * 2);
+                .Where(item => Math.Abs(_scene.Snake[0].CoordX - item.CoordX) <= _settings.ShiftStep * 2)
+                .FirstOrDefault(item => Math.Abs(_scene.Snake[0].CoordY - item.CoordY) <= _settings.ShiftStep * 2);
         }
 
         /// <summary>
@@ -268,8 +268,8 @@ namespace SnakeGameWPF.ViewModels
                 return false;
 
             for (var i = 4; i < _scene.Snake.Count; i++)
-                if (Math.Abs(_scene.Snake[0].ObjectCoordinateX - _scene.Snake[i].ObjectCoordinateX) <= _gameSettings.ShiftStep)
-                    if (Math.Abs(_scene.Snake[0].ObjectCoordinateY - _scene.Snake[i].ObjectCoordinateY) <= _gameSettings.ShiftStep)
+                if (Math.Abs(_scene.Snake[0].CoordX - _scene.Snake[i].CoordX) <= _settings.ShiftStep)
+                    if (Math.Abs(_scene.Snake[0].CoordY - _scene.Snake[i].CoordY) <= _settings.ShiftStep)
                         return true;
             return false;
         }
@@ -277,10 +277,10 @@ namespace SnakeGameWPF.ViewModels
         ///<summary>
         ///Увеличивает скорость.
         ///</summary>
-        private void IncreaseSpeed()
+        private void SpeedUp()
         {
-            if (Score % 3 != 0) return;
-            if (_speed <= 5) return;
+            if (Score % 3 != 0 || _speed <= 5) return;
+            //if (_speed <= 5) return;
 
             _speed -= 2;
             Level++;
@@ -291,14 +291,14 @@ namespace SnakeGameWPF.ViewModels
         {
             _timer.Stop();
 
-            _scene = new Scene(_gameSettings);
+            _scene = new Scene(_settings);
             _direction = Direction.Up;
-            _timer.Interval = new TimeSpan(0, 0, 0, 0, _gameSettings.SnakeSpeed);
+            _timer.Interval = new TimeSpan(0, 0, 0, 0, _settings.SnakeSpeed);
 
-            _speed = _gameSettings.SnakeSpeed;
-            Score = _gameSettings.Score;
-            Life = _gameSettings.SnakeLife;
-            Level = _gameSettings.Level;
+            _speed = _settings.SnakeSpeed;
+            Score = _settings.Score;
+            Life = _settings.SnakeLife;
+            Level = _settings.Level;
 
             GetGameObjectsCollection();
         }

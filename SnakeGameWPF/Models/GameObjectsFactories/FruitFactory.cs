@@ -17,10 +17,10 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
         {
             GameObject fruit = new Fruit()
             {
-                ObjectCoordinateX = (new Random().Next(1, 44)) * 20,
-                ObjectCoordinateY = (new Random().Next(1, 34)) * 20,
-                ObjectImage = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\fruit20x20.png")),
-                ObjectType = GameObjectType.Fruit
+                CoordX = (new Random().Next(1, 44)) * 20,
+                CoordY = (new Random().Next(1, 34)) * 20,
+                Image = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\fruit20x20.png")),
+                Type = GameObjectType.Fruit
             };
             return fruit;
         }
@@ -28,7 +28,7 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
         public IList<GameObject> GetFruits()
         {
             var fruits = Enumerable
-                .Range(1, GameSettings.StartNomberOfFruits)
+                .Range(1, Settings.StartNomberOfFruits)
                 .Select(c => GetObject())
                 .ToList();
 

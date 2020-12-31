@@ -53,7 +53,7 @@
                 Height="700"
                 Width="900"/>
 
-        <ItemsControl ItemsSource="{Binding GameObjectsCollection}">
+        <ItemsControl ItemsSource="{Binding GameObjectCollection}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas/>
@@ -61,13 +61,13 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>
                 <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding ObjectCoordinateX}"/>
-                    <Setter Property="Canvas.Top" Value="{Binding ObjectCoordinateY}"/>
+                    <Setter Property="Canvas.Left" Value="{Binding CoordX}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding CoordY}"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Image Source="{Binding ObjectImage}"/>
+                    <Image Source="{Binding Image}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

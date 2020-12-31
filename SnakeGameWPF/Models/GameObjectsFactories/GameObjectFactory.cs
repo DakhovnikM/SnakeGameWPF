@@ -4,11 +4,11 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
 {
     internal abstract class GameObjectFactory
     {
-        public GameSettings GameSettings { get; }
+        public GameSettings Settings { get; }
 
         public GameObjectFactory(GameSettings gameSettings)
         {
-            GameSettings = gameSettings;
+            Settings = gameSettings;
         }
 
         public abstract GameObject GetObject();
