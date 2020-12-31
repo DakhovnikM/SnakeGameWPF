@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media.Imaging;
+
 using SnakeGameWPF.Models.GameObjects;
 
 namespace SnakeGameWPF.Models.GameObjectsFactories
 {
     internal class SnakeFactory : GameObjectFactory
     {
+        private int _shiftCoordY;
+
         public SnakeFactory(GameSettings gameSettings) : base(gameSettings)
         {
 
@@ -17,23 +21,20 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
             GameObject snakeElement = new Snake()
             {
                 ObjectCoordinateX = GameSettings.SnakeStartPositionX,
-                ObjectCoordinateY = GameSettings.SnakeStartPositionY,
+                ObjectCoordinateY = _shiftCoordY * GameSettings.ShiftStep + GameSettings.SnakeStartPositionY,
                 ObjectImage = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\snakeEll20x20.png")),
                 ObjectType = GameObjectType.Snake
             };
+            if (_shiftCoordY <= GameSettings.StartNomberOfSnakeElements) _shiftCoordY++;
             return snakeElement;
         }
 
         public IList<GameObject> GetSnake()
         {
-            var snake = new List<GameObject>();
-
-            for (var i = 0; i < GameSettings.StartNomberOfSnakeElements; i++)
-            {
-                GameObject snakeElement = GetObject();
-                snakeElement.ObjectCoordinateY += i * GameSettings.ShiftStep;
-                snake.Add(snakeElement);
-            }
+            var snake = Enumerable
+                .Range(1, GameSettings.StartNomberOfSnakeElements)
+                .Select(c => GetObject())
+                .ToList();
             return snake;
         }
     }
