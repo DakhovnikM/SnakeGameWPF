@@ -17,7 +17,7 @@ namespace SnakeGameWPF.ViewModels
     {
         #region Поля
         private Direction _direction;
-        private readonly Scene _scene;
+        private Scene _scene;
         private readonly GameSettings _gameSettings;
         private readonly DispatcherTimer _timer;
         private int _speed;
@@ -290,12 +290,17 @@ namespace SnakeGameWPF.ViewModels
         private void GameOver()
         {
             _timer.Stop();
-            //mainWindow.ApplyBlur();
-            //window2.Owner = mainWindow;
-            //dialogWindow.Label.Content = "У вас не осталось жизней.\nКонец игры !!!";
-            //dialogWindow.Button.Content = "Заново";
-            //dialogWindow.Show();
-            //window2.TextBlock_W2.Text = Window2DisplayInfo();
+
+            _scene = new Scene(_gameSettings);
+            _direction = Direction.Up;
+            _timer.Interval = new TimeSpan(0, 0, 0, 0, _gameSettings.SnakeSpeed);
+
+            _speed = _gameSettings.SnakeSpeed;
+            Score = _gameSettings.Score;
+            Life = _gameSettings.SnakeLife;
+            Level = _gameSettings.Level;
+
+            GetGameObjectsCollection();
         }
     }
 }
