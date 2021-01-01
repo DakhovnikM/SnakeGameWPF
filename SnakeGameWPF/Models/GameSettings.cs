@@ -6,11 +6,11 @@
 
         public int GameFieldHeight { get; } = 680;
 
-        public int StartNomberOfFruits { get;} = 4;
+        public int StartNumberOfFruits { get;} = 4;
 
-        public int StartNomberOfStones { get;} = 20;
+        public int StartNumberOfStones { get;} = 20;
 
-        public int StartNomberOfSnakeElements { get;} = 5;
+        public int StartNumberOfSnakeElements { get;} = 5;
 
         public double SnakeStartPositionX { get; } = 250;
 

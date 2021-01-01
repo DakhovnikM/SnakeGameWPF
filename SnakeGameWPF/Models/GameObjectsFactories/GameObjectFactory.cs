@@ -4,7 +4,7 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
 {
     internal abstract class GameObjectFactory
     {
-        public GameSettings Settings { get; }
+        protected GameSettings Settings { get; }
 
         public GameObjectFactory(GameSettings gameSettings)
         {

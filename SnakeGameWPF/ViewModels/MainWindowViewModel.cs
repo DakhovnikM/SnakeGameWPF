@@ -122,7 +122,7 @@ namespace SnakeGameWPF.ViewModels
             Level = _settings.Level;
 
             GameObjectCollection = new ObservableCollection<GameObject>();
-            GetGameObjectsCollection();
+            GetGameObjectCollection();
 
             #region Создание команд
             KeyUpCommand = new RelayCommand(OnExecutedKeyUpCommand, CanExecuteKeyUpCommand);
@@ -142,15 +142,10 @@ namespace SnakeGameWPF.ViewModels
         /// <param name="e"></param>
         private void GameEngine(object sender, EventArgs e)
         {
-            bool snakeBitItSelf = SnakeHeadPositionMatchBody();
-            if (snakeBitItSelf)
-            {
-                Life = 0;
-                GameOver();
-            }
+            bool collided = SnakeCollidedItSelf();
+            if (collided) GameOver();
 
             var canAddStone = false;
-
             GameObject objToRemove = GetObjectToRemove(GameObjectCollection);
 
             if (objToRemove is Fruit fruit)
@@ -163,7 +158,7 @@ namespace SnakeGameWPF.ViewModels
                 canAddStone = true;
                 SpeedUp();
             }
-            else
+
             if (objToRemove is Stone stone)
             {
                 _scene.Stones.Remove(stone);
@@ -175,7 +170,7 @@ namespace SnakeGameWPF.ViewModels
 
             MoveSnake();
             GameObjectCollection.Clear();
-            GetGameObjectsCollection();
+            GetGameObjectCollection();
         }
 
         /// <summary>
@@ -234,11 +229,11 @@ namespace SnakeGameWPF.ViewModels
             _scene.Snake[1].CoordX = tmpPositionX;
             _scene.Snake[1].CoordY = tmpPositionY;
         }
-         
+
         /// <summary>
         /// Объединяет все игровые элементы в одну коллекцию.
         /// </summary>
-        private void GetGameObjectsCollection()
+        private void GetGameObjectCollection()
         {
             foreach (var fruit in _scene.Fruits) GameObjectCollection.Add(fruit);
             foreach (var stone in _scene.Stones) GameObjectCollection.Add(stone);
@@ -254,15 +249,15 @@ namespace SnakeGameWPF.ViewModels
         private GameObject GetObjectToRemove(ObservableCollection<GameObject> gameObjects)
         {
             return gameObjects
-                .Where(item => Math.Abs(_scene.Snake[0].CoordX - item.CoordX) <= _settings.ShiftStep * 2)
-                .FirstOrDefault(item => Math.Abs(_scene.Snake[0].CoordY - item.CoordY) <= _settings.ShiftStep * 2);
+                .Where(item => Math.Abs(_scene.Snake[0].CoordX - item.CoordX) <= _settings.ShiftStep)
+                .FirstOrDefault(item => Math.Abs(_scene.Snake[0].CoordY - item.CoordY) <= _settings.ShiftStep);
         }
 
         /// <summary>
         /// Проверяет на совпадение координат головы змеи и элементов ее тела.
         /// </summary>
         /// <returns>true, false</returns>
-        private bool SnakeHeadPositionMatchBody()
+        private bool SnakeCollidedItSelf()
         {
             if (_scene.Snake.Count < 5)
                 return false;
@@ -290,17 +285,15 @@ namespace SnakeGameWPF.ViewModels
         private void GameOver()
         {
             _timer.Stop();
-
             _scene = new Scene(_settings);
             _direction = Direction.Up;
             _timer.Interval = new TimeSpan(0, 0, 0, 0, _settings.SnakeSpeed);
-
             _speed = _settings.SnakeSpeed;
             Score = _settings.Score;
             Life = _settings.SnakeLife;
             Level = _settings.Level;
 
-            GetGameObjectsCollection();
+            GetGameObjectCollection();
         }
     }
 }

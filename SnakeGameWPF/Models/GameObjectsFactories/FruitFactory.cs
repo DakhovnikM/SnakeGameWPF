@@ -28,7 +28,7 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
         public IList<GameObject> GetFruits()
         {
             var fruits = Enumerable
-                .Range(1, Settings.StartNomberOfFruits)
+                .Range(1, Settings.StartNumberOfFruits)
                 .Select(c => GetObject())
                 .ToList();
 

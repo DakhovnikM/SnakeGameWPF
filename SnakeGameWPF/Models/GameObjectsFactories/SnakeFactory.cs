@@ -25,14 +25,14 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
                 Image = BitmapFrame.Create(new Uri(@"D:\Source\Repos\dahovnikM\SnakeGameWPF\SnakeGameWPF\Resources\snakeEll20x20.png")),
                 Type = GameObjectType.Snake
             };
-            if (_shiftCoordY <= Settings.StartNomberOfSnakeElements) _shiftCoordY++;
+            if (_shiftCoordY <= Settings.StartNumberOfSnakeElements) _shiftCoordY++;
             return snakeElement;
         }
 
         public IList<GameObject> GetSnake()
         {
             var snake = Enumerable
-                .Range(1, Settings.StartNomberOfSnakeElements)
+                .Range(1, Settings.StartNumberOfSnakeElements)
                 .Select(c => GetObject())
                 .ToList();
             return snake;

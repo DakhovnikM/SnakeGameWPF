@@ -7,6 +7,9 @@ using SnakeGameWPF.Models.GameObjectsFactories;
 
 namespace SnakeGameWPF.Models
 {
+    /// <summary>
+    /// Класс формирует готовую для отображения сцену со всеми обьектами.
+    /// </summary>
     internal class Scene
     {
         private GameObject _newObject;
@@ -35,7 +38,7 @@ namespace SnakeGameWPF.Models
             Snake.Add(snakeElement);
         }
 
-        public void AddNewFruit() //TODO Реализовать универсальный метод
+        public void AddNewFruit()
         {
             while (true)
             {

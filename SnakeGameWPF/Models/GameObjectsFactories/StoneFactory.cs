@@ -28,7 +28,7 @@ namespace SnakeGameWPF.Models.GameObjectsFactories
         public IList<GameObject> GetStones()
         {
             var stones = Enumerable
-                .Range(1, Settings.StartNomberOfStones)
+                .Range(1, Settings.StartNumberOfStones)
                 .Select(c => GetObject())
                 .ToList();
             
