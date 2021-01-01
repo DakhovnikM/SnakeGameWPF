@@ -43,7 +43,10 @@ namespace SnakeGameWPF.ViewModels
             {
                 _life = value;
                 if (_life == 0)
-                    MessageBox.Show("У вас не осталось жизней !!!", "КОНЕЦ ИГРЫ", MessageBoxButton.OKCancel);
+                {
+                    //DialogWindow;
+
+                }
                 OnPropertyChanged("Life");
             }
         }
@@ -275,7 +278,6 @@ namespace SnakeGameWPF.ViewModels
         private void SpeedUp()
         {
             if (Score % 3 != 0 || _speed <= 5) return;
-            //if (_speed <= 5) return;
 
             _speed -= 2;
             Level++;
@@ -292,7 +294,6 @@ namespace SnakeGameWPF.ViewModels
             Score = _settings.Score;
             Life = _settings.SnakeLife;
             Level = _settings.Level;
-
             GetGameObjectCollection();
         }
     }

@@ -19,11 +19,14 @@
     </Window.DataContext>
     
     <Window.Resources>
+        <FontFamily x:Key="Retrofont">pack://application:,,,/Fonts/#Retro Gaming</FontFamily>
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontFamily" Value="{StaticResource Retrofont}"/>
             <Setter Property="Background" Value="Bisque"/>
             <Setter Property="Width" Value="125"/>
             <Setter Property="Margin" Value="10"/>
+            <Setter Property="Foreground" Value="Brown"/>
         </Style>
     </Window.Resources>
 
@@ -33,11 +36,15 @@
             <RowDefinition Height="0.4*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Content="{Binding }"  Margin="10" FontSize="18"/>
+        <Label Grid.Row="0" 
+               Content="{Binding Content}"  
+               Margin="10" 
+               FontSize="18" 
+               FontFamily="{StaticResource Retrofont}"/>
 
         <DockPanel Grid.Row="1" LastChildFill="False">
             <Button Content="OK" DockPanel.Dock="Left"/>
-            <Button Content="EXIT" DockPanel.Dock="Right"/>
+            <Button Content="EXIT" DockPanel.Dock="Right" Command=""/>
         </DockPanel>
 
     </Grid>
