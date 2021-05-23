@@ -67,35 +67,10 @@ namespace SnakeGameWPF.ViewModels
 
         #region Команды
         public ICommand KeyUpCommand { get; set; }
-        private bool CanExecuteKeyUpCommand(object p) => _direction != Direction.Down;
-        private void OnExecutedKeyUpCommand(object p)
-        {
-            _direction = Direction.Up;
-        }
-
         public ICommand KeyDownCommand { get; set; }
-        private bool CanExecuteKeyDownCommand(object p) => _direction != Direction.Up;
-        private void OnExecutedKeyDownCommand(object p)
-        {
-            _direction = Direction.Down;
-        }
-
         public ICommand KeyRightCommand { get; set; }
-        private bool CanExecuteKeyRightCommand(object p) => _direction != Direction.Left;
-        private void OnExecutedKeyRightCommand(object p)
-        {
-            _direction = Direction.Right;
-        }
-
         public ICommand KeyLeftCommand { get; set; }
-        private bool CanExecuteKeyLeftCommand(object p) => _direction != Direction.Right;
-        private void OnExecutedKeyLeftCommand(object p)
-        {
-            _direction = Direction.Left;
-        }
-
         public ICommand KeySpaceCommand { get; set; }
-        private bool CanExecuteKeySpaceCommand(object p) => true;
         private void OnExecutedKeySpaceCommand(object p)
         {
             if (_timer.IsEnabled) _timer.Stop();
@@ -103,11 +78,7 @@ namespace SnakeGameWPF.ViewModels
         }
 
         public ICommand BtnExitCommand { get; set; }
-        private bool CanExecuteBtnExitCommand(object p) => true;
-        private void OnExecutedBtnExitCommand(object p)
-        {
-            Application.Current.Shutdown();
-        }
+
         #endregion
 
         #region CTOR
@@ -128,12 +99,17 @@ namespace SnakeGameWPF.ViewModels
             GetGameObjectCollection();
 
             #region Создание команд
-            KeyUpCommand = new RelayCommand(OnExecutedKeyUpCommand, CanExecuteKeyUpCommand);
-            KeyDownCommand = new RelayCommand(OnExecutedKeyDownCommand, CanExecuteKeyDownCommand);
-            KeyRightCommand = new RelayCommand(OnExecutedKeyRightCommand, CanExecuteKeyRightCommand);
-            KeyLeftCommand = new RelayCommand(OnExecutedKeyLeftCommand, CanExecuteKeyLeftCommand);
-            KeySpaceCommand = new RelayCommand(OnExecutedKeySpaceCommand, CanExecuteKeySpaceCommand);
-            BtnExitCommand = new RelayCommand(OnExecutedBtnExitCommand, CanExecuteBtnExitCommand);
+            KeyUpCommand = new RelayCommand((object p) => _direction = Direction.Up, (object p) => _direction != Direction.Down);
+
+            KeyDownCommand = new RelayCommand((object p) => _direction = Direction.Down, (object p) => _direction != Direction.Up);
+
+            KeyRightCommand = new RelayCommand((object p) => _direction = Direction.Right, (object p) => _direction != Direction.Left);
+
+            KeyLeftCommand = new RelayCommand((object p) => _direction = Direction.Left, (object p) => _direction != Direction.Right);
+
+            KeySpaceCommand = new RelayCommand(OnExecutedKeySpaceCommand);
+
+            BtnExitCommand = new RelayCommand((object p) => Application.Current.Shutdown(), (object p) => true);
             #endregion
         }
         #endregion

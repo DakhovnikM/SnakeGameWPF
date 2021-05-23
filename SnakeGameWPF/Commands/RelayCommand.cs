@@ -3,14 +3,8 @@ using System.Windows.Input;
 
 namespace SnakeGameWPF.Commands
 {
-    internal class RelayCommand : ICommand
+    internal class RelayCommand : Command
     {
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-
         private readonly Action<object> _execute;
         private readonly Func<object, bool> _canExecute;
 
@@ -21,12 +15,12 @@ namespace SnakeGameWPF.Commands
         }
 
 
-        public bool CanExecute(object parameter)
+        public override bool CanExecute(object parameter)
         {
             return _canExecute?.Invoke(parameter) ?? true;
         }
 
-        public void Execute(object parameter)
+        public override void Execute(object parameter)
         {
             _execute(parameter);
         }
